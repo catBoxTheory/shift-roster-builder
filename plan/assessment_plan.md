@@ -20,11 +20,11 @@ The most important strategy is to ship a clean, working core with clear reasonin
 - GitHub repository: [catBoxTheory/shift-roster-builder](https://github.com/catBoxTheory/shift-roster-builder)
 - Remote branch: `main` tracking `origin/main`
 - Verified checks: `npm run build`, `npm test`, `npm audit`, and Vite dev server HTTP 200
-- Phase 2 core logic and tests are complete.
+- Phase 3 roster state and validation are complete.
 - Stage-by-stage documentation is maintained under `docs/`.
-- Next phase: Phase 3, Roster State and Validation
+- Next phase: Phase 4, Employee Panel
 
-Phase 3 has not started yet.
+Phase 4 has not started yet.
 
 ---
 
@@ -82,7 +82,8 @@ Shift Roster Builder/
 │   ├── test/
 │   │   ├── time.test.js
 │   │   ├── conflicts.test.js
-│   │   └── summary.test.js
+│   │   ├── summary.test.js
+│   │   └── useRoster.test.js
 │   ├── App.jsx
 │   ├── main.jsx
 │   └── styles.css
@@ -240,11 +241,11 @@ Completed steps:
 
 Phase 2 used test-first development. The first test run failed because the modules were missing; the final test run passed with 3 files and 13 tests.
 
-### Phase 3: Roster State and Validation
+### Phase 3: Roster State and Validation - Complete
 
 Goal: make all required actions explicit and predictable.
 
-Steps:
+Completed steps:
 
 1. Implement `useRoster` with reducer actions:
    - add, edit, remove employee
@@ -255,6 +256,8 @@ Steps:
 4. Recalculate derived data from state: conflicts and weekly totals.
 5. Preserve small, readable action names and avoid generic abstraction.
 6. Create `docs/phase_3_roster_state.md` using `docs/phase_template.md`.
+
+Phase 3 used test-first development. The first focused test run failed because `src/hooks/useRoster.js` was missing; the final focused test run passed with 8 tests, and the full suite passed with 21 tests.
 
 ### Phase 4: Employee Panel
 
@@ -354,7 +357,7 @@ Submission steps:
 | --- | ---: | ---: |
 | Phase 1: Project setup | Complete | 0:30 |
 | Phase 2: Core logic/tests | Complete | 1:30 |
-| Phase 3: State/validation | 1 hr | 2:30 |
+| Phase 3: State/validation | Complete | 2:30 |
 | Phase 4: Employee panel | 1 hr | 3:30 |
 | Phase 5: Roster grid/editor | 2 hr | 5:30 |
 | Phase 6: Conflicts/summary | 1 hr | 6:30 |

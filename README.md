@@ -13,12 +13,12 @@ The Vite dev server will print the local URL after startup.
 
 ## Current Status
 
-Phase 2 is complete: the project has a root-level React + Vite scaffold plus tested utility logic for time parsing, shift hours, conflict detection, and weekly totals.
+Phase 3 is complete: the project has a root-level React + Vite scaffold, tested scheduling utilities, and a reducer-backed roster state layer with validation.
 
 Planned next phases:
 
-1. Add roster state and validation.
-2. Build employee management, weekly grid assignment, conflict UI, and summary panel.
+1. Build employee management UI.
+2. Build weekly grid assignment, conflict UI, and summary panel.
 3. Add CSV export or mobile polish if the core app is stable.
 4. Add README screenshots or a short demo recording before submission.
 
