@@ -4,7 +4,7 @@ import {
   detectOverlapConflicts,
   detectRosterConflicts,
   getConflictingShiftIds
-} from "../utils/conflicts.js";
+} from "./conflicts.js";
 
 const shift = (id, overrides = {}) => ({
   id,

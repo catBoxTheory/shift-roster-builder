@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { calculateWeeklyHoursByEmployee } from "../utils/summary.js";
+import { calculateWeeklyHoursByEmployee } from "./summary.js";
 
 describe("calculateWeeklyHoursByEmployee", () => {
   test("totals assigned hours per employee", () => {

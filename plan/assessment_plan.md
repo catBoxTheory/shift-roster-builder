@@ -73,17 +73,16 @@ Shift Roster Builder/
 │   │   ├── SummaryPanel.jsx        # Weekly totals, conflicts, export action
 │   │   └── ConflictBadge.jsx       # Visual conflict indicator
 │   ├── hooks/
-│   │   └── useRoster.js            # Roster reducer/actions and derived state
+│   │   ├── useRoster.js            # Roster reducer/actions and derived state
+│   │   └── useRoster.test.js
 │   ├── utils/
 │   │   ├── time.js                 # HH:MM parsing and hour calculations
-│   │   ├── conflicts.js            # Overlap and consecutive-day detection
-│   │   ├── summary.js              # Weekly hour totals by employee
-│   │   └── csvExport.js            # Optional CSV export
-│   ├── test/
 │   │   ├── time.test.js
+│   │   ├── conflicts.js            # Overlap and consecutive-day detection
 │   │   ├── conflicts.test.js
+│   │   ├── summary.js              # Weekly hour totals by employee
 │   │   ├── summary.test.js
-│   │   └── useRoster.test.js
+│   │   └── csvExport.js            # Optional CSV export
 │   ├── App.jsx
 │   ├── main.jsx
 │   └── styles.css

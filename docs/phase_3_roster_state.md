@@ -61,7 +61,7 @@ Validation lives at the state boundary instead of inside UI components. This kee
 Commands run:
 
 ```bash
-npm test -- src/test/useRoster.test.js
+npm test -- src/hooks/useRoster.test.js
 npm test
 npm run build
 ```

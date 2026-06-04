@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { calculateShiftHours, parseTimeToMinutes } from "../utils/time.js";
+import { calculateShiftHours, parseTimeToMinutes } from "./time.js";
 
 describe("parseTimeToMinutes", () => {
   test("converts HH:MM strings to minutes after midnight", () => {
