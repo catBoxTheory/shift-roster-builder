@@ -20,11 +20,11 @@ The most important strategy is to ship a clean, working core with clear reasonin
 - GitHub repository: [catBoxTheory/shift-roster-builder](https://github.com/catBoxTheory/shift-roster-builder)
 - Remote branch: `main` tracking `origin/main`
 - Verified checks: `npm run build`, `npm test`, `npm audit`, and Vite dev server HTTP 200
-- Phase 3 roster state and validation are complete.
+- Phase 4 employee panel UI is complete.
 - Stage-by-stage documentation is maintained under `docs/`.
-- Next phase: Phase 4, Employee Panel
+- Next phase: Phase 5, Weekly Roster Grid and Shift Editor
 
-Phase 4 has not started yet.
+Phase 5 has not started yet.
 
 ---
 
@@ -68,6 +68,7 @@ Shift Roster Builder/
 ├── src/
 │   ├── components/
 │   │   ├── EmployeePanel.jsx       # Add, edit, remove employees and roles
+│   │   ├── EmployeePanel.test.jsx
 │   │   ├── RosterGrid.jsx          # Weekly grid: days as columns, employees as rows
 │   │   ├── ShiftEditor.jsx         # Create/edit shift form or modal
 │   │   ├── SummaryPanel.jsx        # Weekly totals, conflicts, export action
@@ -258,11 +259,11 @@ Completed steps:
 
 Phase 3 used test-first development. The first focused test run failed because `src/hooks/useRoster.js` was missing; the final focused test run passed with 8 tests, and the full suite passed with 21 tests.
 
-### Phase 4: Employee Panel
+### Phase 4: Employee Panel - Complete
 
 Goal: satisfy employee management requirement.
 
-Steps:
+Completed steps:
 
 1. Build list of employees with name and role tags.
 2. Add an employee form with predefined role options: Cashier, Supervisor, Cook, Barista, Cleaner.
@@ -270,6 +271,8 @@ Steps:
 4. Support remove with a lightweight confirmation.
 5. When removing an employee, remove or clearly handle that employee's shifts.
 6. Create `docs/phase_4_employee_panel.md` using `docs/phase_template.md`.
+
+Phase 4 used test-first development. The first focused component test run failed because `EmployeePanel.jsx` was missing; the final focused test run passed with 5 tests, and the full suite passed with 26 tests.
 
 ### Phase 5: Weekly Roster Grid and Shift Editor
 
@@ -357,7 +360,7 @@ Submission steps:
 | Phase 1: Project setup | Complete | 0:30 |
 | Phase 2: Core logic/tests | Complete | 1:30 |
 | Phase 3: State/validation | Complete | 2:30 |
-| Phase 4: Employee panel | 1 hr | 3:30 |
+| Phase 4: Employee panel | Complete | 3:30 |
 | Phase 5: Roster grid/editor | 2 hr | 5:30 |
 | Phase 6: Conflicts/summary | 1 hr | 6:30 |
 | Phase 7: Stretch goals | 1 hr | 7:30 |

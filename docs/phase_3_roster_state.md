@@ -55,6 +55,7 @@ Validation lives at the state boundary instead of inside UI components. This kee
 - Codex / ChatGPT: implemented and reviewed the reducer, validators, tests, and documentation.
 - `test-driven-development`: guided the red-green implementation flow.
 - `karpathy-guidelines`: kept the state layer small and avoided premature persistence or UI abstractions.
+- External AI model check, user-reported: the user tested `useRoster.js` and also asked another model to test the functionality. The reported result was that `useRoster.js` can run and has no known logical error. Raw external output is not stored in this repository, so this is supporting review evidence rather than the primary verification source.
 
 ## Verification
 
@@ -72,6 +73,7 @@ Results:
 - Focused Phase 3 test run passed: 1 file, 8 tests.
 - Full test run passed: 4 files, 21 tests.
 - Production build passed.
+- Additional user-reported validation: `useRoster.js` was tested manually and by another model with no logical errors reported.
 
 Covered scenarios:
 
