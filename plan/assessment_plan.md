@@ -13,6 +13,19 @@ The most important strategy is to ship a clean, working core with clear reasonin
 
 ---
 
+## Current Status
+
+- Phase 1 project setup is complete.
+- Local commit: `a69c91f chore: scaffold phase 1 roster app`
+- GitHub repository: [catBoxTheory/shift-roster-builder](https://github.com/catBoxTheory/shift-roster-builder)
+- Remote branch: `main` tracking `origin/main`
+- Verified checks: `npm run build`, `npm test`, `npm audit`, and Vite dev server HTTP 200
+- Next phase: Phase 2, Data Model, Tests, and Core Logic
+
+Phase 2 has not started yet.
+
+---
+
 ## Codex Skills and Workflow Guardrails
 
 Use these Codex skills during implementation:
@@ -178,11 +191,11 @@ Before heavy UI implementation, use the frontend design skill to lock a compact 
 
 ## Implementation Plan
 
-### Phase 1: Project Setup
+### Phase 1: Project Setup - Complete
 
 Goal: create a runnable root-level React + Vite app with no roster features yet.
 
-Steps:
+Completed steps:
 
 1. Initialize `package.json`, Vite config, React entrypoint, root `index.html`, and base CSS.
 2. Add scripts: `dev`, `build`, `preview`, and `test`.
@@ -191,7 +204,7 @@ Steps:
 5. Add a short `README.md` with setup commands, project purpose, current status, and planned features.
 6. Verify `npm install`, `npm run dev`, `npm run build`, and `npm test`.
 
-Stop after Phase 1 for review before adding product behavior.
+Phase 1 was committed and pushed to GitHub. Stop here until Phase 2 is approved before adding roster behavior.
 
 ### Phase 2: Data Model, Tests, and Core Logic
 
@@ -318,7 +331,7 @@ Submission steps:
 
 | Phase | Estimate | Cumulative |
 | --- | ---: | ---: |
-| Phase 1: Project setup | 30 min | 0:30 |
+| Phase 1: Project setup | Complete | 0:30 |
 | Phase 2: Core logic/tests | 1 hr | 1:30 |
 | Phase 3: State/validation | 1 hr | 2:30 |
 | Phase 4: Employee panel | 1 hr | 3:30 |
