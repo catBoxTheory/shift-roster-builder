@@ -4,7 +4,7 @@
 
 - Status: Complete
 - Date: 2026-06-05
-- Roster grid commit: Pending
+- Roster grid commit: `343018c feat: add roster grid shift editor`
 - GitHub: [catBoxTheory/shift-roster-builder](https://github.com/catBoxTheory/shift-roster-builder)
 
 ## Goal

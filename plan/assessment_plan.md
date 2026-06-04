@@ -16,7 +16,7 @@ The most important strategy is to ship a clean, working core with clear reasonin
 ## Current Status
 
 - Phase 1 project setup is complete.
-- Latest recorded local commit: pending Phase 5 commit
+- Phase 5 feature commit: `343018c feat: add roster grid shift editor`
 - GitHub repository: [catBoxTheory/shift-roster-builder](https://github.com/catBoxTheory/shift-roster-builder)
 - Remote branch: `main` tracking `origin/main`
 - Verified checks: `npm run build`, `npm test`, `npm audit`, and Vite/Browser smoke testing
@@ -25,7 +25,7 @@ The most important strategy is to ship a clean, working core with clear reasonin
 - Stage-by-stage documentation is maintained under `docs/`.
 - Next phase: Phase 6, Conflict UI and Summary Panel
 
-Phase 5 is complete locally and ready to commit.
+Phase 5 is complete locally and documented.
 
 ---
 
