@@ -53,6 +53,7 @@ The tests were written first and initially failed because the utility modules di
 - `test-driven-development`: guided the red-green workflow for the pure logic.
 - `karpathy-guidelines`: kept the implementation small and avoided speculative scheduling features.
 - `document-generate`: guided this phase log structure.
+- External AI model check, user-reported: another model reviewed/tested the Phase 2 functionality and reported that 3 core functions passed. The exact model name and raw output were not retained in this repository, so this is recorded as supporting review evidence rather than the primary verification source.
 
 Human review remains important before UI phases because the conflict metadata shape will affect component design.
 
@@ -68,6 +69,7 @@ Results:
 
 - Initial test run failed as expected because `time.js`, `conflicts.js`, and `summary.js` did not exist yet.
 - Final test run passed: 3 test files, 13 tests.
+- Additional user-reported external model check: 3 functions passed.
 
 Covered scenarios:
 
