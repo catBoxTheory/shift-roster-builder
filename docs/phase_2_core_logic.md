@@ -4,7 +4,7 @@
 
 - Status: Complete
 - Date: 2026-06-05
-- Commit: `1d77274 feat: add roster core logic tests`
+- Core logic commit: `253b15c feat: add roster core logic tests`
 - GitHub: [catBoxTheory/shift-roster-builder](https://github.com/catBoxTheory/shift-roster-builder)
 
 ## Goal
