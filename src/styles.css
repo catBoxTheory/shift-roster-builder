@@ -322,35 +322,6 @@ h3 {
   background: #fff7f7;
 }
 
-.roster-placeholder {
-  min-height: 520px;
-}
-
-.placeholder-board {
-  display: grid;
-  min-height: 430px;
-  place-content: center;
-  padding: 24px;
-  color: #64748b;
-  text-align: center;
-}
-
-.placeholder-board span {
-  justify-self: center;
-  margin-bottom: 10px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  color: #4a647f;
-  background: #eef3f8;
-  font-size: 0.8rem;
-  font-weight: 800;
-}
-
-.placeholder-board p {
-  max-width: 320px;
-  margin-bottom: 0;
-}
-
 .summary-facts {
   display: grid;
   gap: 10px;
@@ -383,17 +354,198 @@ h3 {
   font-weight: 900;
 }
 
+.roster-grid-panel {
+  position: relative;
+  overflow: hidden;
+}
+
+.roster-table {
+  overflow-x: auto;
+  padding: 14px;
+}
+
+.roster-header,
+.roster-row {
+  display: grid;
+  grid-template-columns: 160px repeat(7, minmax(112px, 1fr));
+  min-width: 944px;
+}
+
+.roster-header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.employee-column-heading,
+.day-heading,
+.employee-cell,
+.shift-cell {
+  border-right: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.employee-column-heading,
+.day-heading {
+  padding: 10px;
+  color: #40546b;
+  background: #f3f6fa;
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.employee-column-heading {
+  border-top-left-radius: 8px;
+}
+
+.day-heading:last-child {
+  border-top-right-radius: 8px;
+}
+
+.employee-cell {
+  display: grid;
+  gap: 4px;
+  min-height: 106px;
+  padding: 10px;
+  background: #fbfcfe;
+}
+
+.employee-cell strong {
+  font-size: 0.9rem;
+}
+
+.employee-cell span {
+  color: #718198;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.shift-cell {
+  position: relative;
+  display: grid;
+  align-content: start;
+  min-height: 106px;
+  padding: 8px;
+  background: #ffffff;
+}
+
+.add-shift-button {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  display: grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  border: 1px solid #cbd7e4;
+  border-radius: 999px;
+  color: #285174;
+  background: #f8fafc;
+  font-size: 1rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.add-shift-button:hover {
+  background: #e8f1f8;
+}
+
+.shift-card-list {
+  display: grid;
+  gap: 6px;
+  padding-right: 26px;
+}
+
+.shift-card {
+  display: grid;
+  gap: 4px;
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #bfd4e7;
+  border-radius: 7px;
+  color: #24435f;
+  background: #edf6fd;
+  text-align: left;
+}
+
+.shift-card:hover {
+  border-color: #7da8c8;
+  background: #e0f0fb;
+}
+
+.shift-role {
+  width: fit-content;
+  padding: 2px 7px;
+  border-radius: 999px;
+  color: #ffffff;
+  background: #285174;
+  font-size: 0.74rem;
+  font-weight: 900;
+}
+
+.editor-overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgb(23 32 51 / 32%);
+}
+
+.shift-editor {
+  display: grid;
+  gap: 12px;
+  width: min(360px, 100%);
+  padding: 18px;
+  border: 1px solid #d8e0ea;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 18px 44px rgb(23 32 51 / 22%);
+}
+
+.shift-editor-heading h3 {
+  margin-bottom: 4px;
+}
+
+.shift-editor-heading p {
+  margin-bottom: 0;
+  color: #66758a;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.select-input {
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid #ccd6e2;
+  border-radius: 7px;
+  color: #172033;
+  background: #fbfcfe;
+}
+
+.select-input:focus {
+  border-color: #2f6f9f;
+  outline: 3px solid rgb(47 111 159 / 16%);
+}
+
+.time-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.time-fields label {
+  display: grid;
+  gap: 6px;
+}
+
 @media (max-width: 980px) {
   .workspace-grid {
     grid-template-columns: 1fr;
   }
 
-  .roster-placeholder {
-    min-height: 280px;
-  }
-
-  .placeholder-board {
-    min-height: 190px;
+  .roster-table {
+    padding-bottom: 18px;
   }
 }
 

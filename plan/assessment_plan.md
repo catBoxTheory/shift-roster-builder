@@ -16,15 +16,16 @@ The most important strategy is to ship a clean, working core with clear reasonin
 ## Current Status
 
 - Phase 1 project setup is complete.
-- Local commit: `a69c91f chore: scaffold phase 1 roster app`
+- Latest recorded local commit: pending Phase 5 commit
 - GitHub repository: [catBoxTheory/shift-roster-builder](https://github.com/catBoxTheory/shift-roster-builder)
 - Remote branch: `main` tracking `origin/main`
-- Verified checks: `npm run build`, `npm test`, `npm audit`, and Vite dev server HTTP 200
+- Verified checks: `npm run build`, `npm test`, `npm audit`, and Vite/Browser smoke testing
 - Phase 4 employee panel UI is complete.
+- Phase 5 weekly roster grid and shift editor UI is complete.
 - Stage-by-stage documentation is maintained under `docs/`.
-- Next phase: Phase 5, Weekly Roster Grid and Shift Editor
+- Next phase: Phase 6, Conflict UI and Summary Panel
 
-Phase 5 has not started yet.
+Phase 5 is complete locally and ready to commit.
 
 ---
 
@@ -70,6 +71,7 @@ Shift Roster Builder/
 │   │   ├── EmployeePanel.jsx       # Add, edit, remove employees and roles
 │   │   ├── EmployeePanel.test.jsx
 │   │   ├── RosterGrid.jsx          # Weekly grid: days as columns, employees as rows
+│   │   ├── RosterGrid.test.jsx
 │   │   ├── ShiftEditor.jsx         # Create/edit shift form or modal
 │   │   ├── SummaryPanel.jsx        # Weekly totals, conflicts, export action
 │   │   └── ConflictBadge.jsx       # Visual conflict indicator
@@ -274,11 +276,11 @@ Completed steps:
 
 Phase 4 used test-first development. The first focused component test run failed because `EmployeePanel.jsx` was missing; the final focused test run passed with 5 tests, and the full suite passed with 26 tests.
 
-### Phase 5: Weekly Roster Grid and Shift Editor
+### Phase 5: Weekly Roster Grid and Shift Editor - Complete
 
 Goal: satisfy assignment and grid display requirements.
 
-Steps:
+Completed steps:
 
 1. Build a grid with days as columns and employees as rows.
 2. Show shift cards inside employee/day cells.
@@ -287,6 +289,8 @@ Steps:
 5. Use the shift's assigned role as a visible badge.
 6. Keep the grid usable with multiple shifts in the same cell.
 7. Create `docs/phase_5_roster_grid.md` using `docs/phase_template.md`.
+
+Phase 5 used test-first development. The first focused component test run failed because `RosterGrid.jsx` was missing; the final focused test run passed with 6 tests, and the full suite passed with 32 tests. Browser validation found and drove a form-submit hardening so visible time values are submitted reliably.
 
 ### Phase 6: Conflict UI and Summary Panel
 
@@ -361,7 +365,7 @@ Submission steps:
 | Phase 2: Core logic/tests | Complete | 1:30 |
 | Phase 3: State/validation | Complete | 2:30 |
 | Phase 4: Employee panel | Complete | 3:30 |
-| Phase 5: Roster grid/editor | 2 hr | 5:30 |
+| Phase 5: Roster grid/editor | Complete | 5:30 |
 | Phase 6: Conflicts/summary | 1 hr | 6:30 |
 | Phase 7: Stretch goals | 1 hr | 7:30 |
 | Phase 8: README/submission polish | 1 hr | 8:30 |

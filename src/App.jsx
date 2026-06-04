@@ -1,4 +1,5 @@
 import EmployeePanel from "./components/EmployeePanel.jsx";
+import RosterGrid from "./components/RosterGrid.jsx";
 import { useRoster } from "./hooks/useRoster.js";
 
 export default function App() {
@@ -11,13 +12,13 @@ export default function App() {
           <p className="stage-label">Optix Stage 2 Assessment</p>
           <h1 id="app-title">Shift Roster Builder</h1>
           <p className="app-subtitle">
-            Employee management is active. Roster assignment and summaries are
-            staged for the next phases.
+            Employee management and weekly shift assignment are active.
+            Conflicts and summaries will be polished in the next phase.
           </p>
         </div>
         <div className="status-card" aria-label="Project status">
           <span className="status-dot" aria-hidden="true" />
-          <span>Phase 4 complete</span>
+          <span>Phase 5 complete</span>
         </div>
       </header>
 
@@ -30,18 +31,14 @@ export default function App() {
           onRemoveEmployee={roster.removeEmployee}
         />
 
-        <section className="panel roster-placeholder" aria-labelledby="grid-title">
-          <div className="panel-heading">
-            <div>
-              <p className="eyebrow">Week</p>
-              <h2 id="grid-title">Roster Grid</h2>
-            </div>
-          </div>
-          <div className="placeholder-board">
-            <span>Phase 5</span>
-            <p>Day-by-day shift assignment will use the employees managed here.</p>
-          </div>
-        </section>
+        <RosterGrid
+          employees={roster.employees}
+          shifts={roster.shifts}
+          lastErrors={roster.lastErrors}
+          onAddShift={roster.addShift}
+          onEditShift={roster.editShift}
+          onRemoveShift={roster.removeShift}
+        />
 
         <aside className="panel summary-placeholder" aria-labelledby="summary-title">
           <div className="panel-heading">

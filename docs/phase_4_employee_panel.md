@@ -56,6 +56,7 @@ The app shell was changed from a Phase 1 placeholder into a practical workspace.
 - `frontend-design`: guided the practical, manager-focused UI direction.
 - `test-driven-development`: guided the component test-first flow.
 - `karpathy-guidelines`: kept the feature scoped to employee management only.
+- External model and Chrome DevTools check, user-reported: the user reviewed the employee panel and used another model with Chrome DevTools to check the functions. The reported result was that all Phase 4 functions passed. Raw external output is not stored in this repository, so this is supporting review evidence rather than the primary verification source.
 
 ## Verification
 
@@ -73,6 +74,7 @@ Results:
 - Focused EmployeePanel test run passed: 1 file, 5 tests.
 - Full test run passed: 5 files, 26 tests.
 - Production build passed.
+- Additional user-reported validation: manual review plus another model using Chrome DevTools found all Phase 4 functions passed.
 
 Covered scenarios:
 
