@@ -22,6 +22,10 @@ Planned next phases:
 3. Build employee management, weekly grid assignment, conflict UI, and summary panel.
 4. Add README screenshots or a short demo recording before submission.
 
+## Development Documentation
+
+Stage-by-stage documentation lives in [docs/](./docs/). Each phase records thought process, design decisions, AI tools used, verification, and follow-up work so the final submission has a clear development trail.
+
 ## Scripts
 
 ```bash

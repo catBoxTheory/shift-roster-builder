@@ -20,6 +20,7 @@ The most important strategy is to ship a clean, working core with clear reasonin
 - GitHub repository: [catBoxTheory/shift-roster-builder](https://github.com/catBoxTheory/shift-roster-builder)
 - Remote branch: `main` tracking `origin/main`
 - Verified checks: `npm run build`, `npm test`, `npm audit`, and Vite dev server HTTP 200
+- Stage-by-stage documentation has been added under `docs/`.
 - Next phase: Phase 2, Data Model, Tests, and Core Logic
 
 Phase 2 has not started yet.
@@ -59,6 +60,10 @@ Planned structure:
 
 ```text
 Shift Roster Builder/
+├── docs/
+│   ├── README.md                   # Documentation index
+│   ├── phase_template.md           # Reusable documentation template
+│   └── phase_1_project_setup.md    # Completed Phase 1 log
 ├── src/
 │   ├── components/
 │   │   ├── EmployeePanel.jsx       # Add, edit, remove employees and roles
@@ -87,6 +92,8 @@ Shift Roster Builder/
 ```
 
 Avoid multiple documentation files unless there is extra time. A strong root `README.md` is more valuable for this assessment than scattered notes.
+
+Exception: keep focused phase logs in `docs/` because the assessment email explicitly asks for thought process, design decisions, and AI tool usage. Each phase should update its own log before being committed.
 
 ---
 
@@ -203,6 +210,7 @@ Completed steps:
 4. Create placeholder app shell with the product name and three empty workspace regions.
 5. Add a short `README.md` with setup commands, project purpose, current status, and planned features.
 6. Verify `npm install`, `npm run dev`, `npm run build`, and `npm test`.
+7. Document Phase 1 thought process, design decisions, AI usage, verification, and follow-up work in `docs/phase_1_project_setup.md`.
 
 Phase 1 was committed and pushed to GitHub. Stop here until Phase 2 is approved before adding roster behavior.
 
@@ -225,6 +233,7 @@ Steps:
    - non-consecutive 6 days is not a consecutive-day conflict
 5. Implement `src/utils/conflicts.js`.
 6. Add summary total tests and implement weekly hour calculations.
+7. Create `docs/phase_2_core_logic.md` using `docs/phase_template.md`.
 
 ### Phase 3: Roster State and Validation
 
@@ -240,6 +249,7 @@ Steps:
 3. Validate shift employee exists, role belongs to employee, day is valid, and `endTime > startTime`.
 4. Recalculate derived data from state: conflicts and weekly totals.
 5. Preserve small, readable action names and avoid generic abstraction.
+6. Create `docs/phase_3_roster_state.md` using `docs/phase_template.md`.
 
 ### Phase 4: Employee Panel
 
@@ -252,6 +262,7 @@ Steps:
 3. Support inline edit for name and roles.
 4. Support remove with a lightweight confirmation.
 5. When removing an employee, remove or clearly handle that employee's shifts.
+6. Create `docs/phase_4_employee_panel.md` using `docs/phase_template.md`.
 
 ### Phase 5: Weekly Roster Grid and Shift Editor
 
@@ -265,6 +276,7 @@ Steps:
 4. Add shift editing/removal from an existing shift card.
 5. Use the shift's assigned role as a visible badge.
 6. Keep the grid usable with multiple shifts in the same cell.
+7. Create `docs/phase_5_roster_grid.md` using `docs/phase_template.md`.
 
 ### Phase 6: Conflict UI and Summary Panel
 
@@ -277,6 +289,7 @@ Steps:
 3. Show total weekly hours per employee.
 4. Show conflict counts in the summary panel.
 5. Sort summary rows by total hours descending, with conflicts easy to spot.
+6. Create `docs/phase_6_conflicts_summary.md` using `docs/phase_template.md`.
 
 ### Phase 7: Stretch Goals
 
@@ -288,6 +301,7 @@ Priority:
 2. Mobile-responsive polish.
 3. Availability preferences.
 4. Drag-and-drop only if time remains.
+5. Create `docs/phase_7_stretch_goals.md` if any stretch goals are implemented.
 
 CSV export is the preferred stretch because it is useful, small, and easy to verify. Drag-and-drop is lowest priority because it can consume time without improving the required scoring areas as much.
 
@@ -306,6 +320,7 @@ README should include:
 - AI tools used, including Codex/ChatGPT and any other assistants.
 - How AI output was reviewed and modified.
 - Known limitations, including no backend and no overnight shifts.
+- Links to the phase logs in `docs/`.
 
 Submission steps:
 
@@ -313,6 +328,7 @@ Submission steps:
 2. Take screenshot or record a 60-90 second demo.
 3. Push to a public GitHub repository.
 4. Reply to Spencer's email with the repository link and demo/screenshot note.
+5. Create `docs/phase_8_submission_polish.md` summarizing final checks, submission assets, and remaining limitations.
 
 ---
 
