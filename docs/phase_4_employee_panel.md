@@ -4,7 +4,7 @@
 
 - Status: Complete
 - Date: 2026-06-05
-- Commit: pending at time of writing
+- Employee panel commit: `29d88c6 feat: add employee management panel`
 - GitHub: [catBoxTheory/shift-roster-builder](https://github.com/catBoxTheory/shift-roster-builder)
 
 ## Goal
