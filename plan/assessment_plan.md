@@ -20,10 +20,11 @@ The most important strategy is to ship a clean, working core with clear reasonin
 - GitHub repository: [catBoxTheory/shift-roster-builder](https://github.com/catBoxTheory/shift-roster-builder)
 - Remote branch: `main` tracking `origin/main`
 - Verified checks: `npm run build`, `npm test`, `npm audit`, and Vite dev server HTTP 200
-- Stage-by-stage documentation has been added under `docs/`.
-- Next phase: Phase 2, Data Model, Tests, and Core Logic
+- Phase 2 core logic and tests are complete.
+- Stage-by-stage documentation is maintained under `docs/`.
+- Next phase: Phase 3, Roster State and Validation
 
-Phase 2 has not started yet.
+Phase 3 has not started yet.
 
 ---
 
@@ -76,10 +77,12 @@ Shift Roster Builder/
 │   ├── utils/
 │   │   ├── time.js                 # HH:MM parsing and hour calculations
 │   │   ├── conflicts.js            # Overlap and consecutive-day detection
+│   │   ├── summary.js              # Weekly hour totals by employee
 │   │   └── csvExport.js            # Optional CSV export
 │   ├── test/
 │   │   ├── time.test.js
-│   │   └── conflicts.test.js
+│   │   ├── conflicts.test.js
+│   │   └── summary.test.js
 │   ├── App.jsx
 │   ├── main.jsx
 │   └── styles.css
@@ -214,11 +217,11 @@ Completed steps:
 
 Phase 1 was committed and pushed to GitHub. Stop here until Phase 2 is approved before adding roster behavior.
 
-### Phase 2: Data Model, Tests, and Core Logic
+### Phase 2: Data Model, Tests, and Core Logic - Complete
 
 Goal: implement the business logic with tests before UI complexity.
 
-Steps:
+Completed steps:
 
 1. Add tests for `parseTimeToMinutes`, `calculateShiftHours`, and invalid time strings.
 2. Implement `src/utils/time.js`.
@@ -234,6 +237,8 @@ Steps:
 5. Implement `src/utils/conflicts.js`.
 6. Add summary total tests and implement weekly hour calculations.
 7. Create `docs/phase_2_core_logic.md` using `docs/phase_template.md`.
+
+Phase 2 used test-first development. The first test run failed because the modules were missing; the final test run passed with 3 files and 13 tests.
 
 ### Phase 3: Roster State and Validation
 
@@ -348,7 +353,7 @@ Submission steps:
 | Phase | Estimate | Cumulative |
 | --- | ---: | ---: |
 | Phase 1: Project setup | Complete | 0:30 |
-| Phase 2: Core logic/tests | 1 hr | 1:30 |
+| Phase 2: Core logic/tests | Complete | 1:30 |
 | Phase 3: State/validation | 1 hr | 2:30 |
 | Phase 4: Employee panel | 1 hr | 3:30 |
 | Phase 5: Roster grid/editor | 2 hr | 5:30 |
