@@ -4,7 +4,7 @@
 
 - Status: Complete
 - Date: 2026-06-05
-- Commit: pending at time of writing
+- Core state commit: `dc1a8d1 feat: add roster state validation`
 - GitHub: [catBoxTheory/shift-roster-builder](https://github.com/catBoxTheory/shift-roster-builder)
 
 ## Goal
