@@ -66,7 +66,6 @@ export default function EmployeePanel({
           <p className="eyebrow">Team</p>
           <h2 id="employees-title">Employees</h2>
         </div>
-        <span className="count-pill">{employees.length}</span>
       </div>
 
       <form className="employee-form" onSubmit={submitNewEmployee}>

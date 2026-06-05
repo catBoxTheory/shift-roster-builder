@@ -23,52 +23,55 @@ export default function SummaryPanel({
 
   return (
     <aside className="panel summary-panel" aria-labelledby="summary-title">
-      <div className="panel-heading">
-        <div>
+      <div className="review-layout">
+        <section className="review-summary" aria-labelledby="summary-title">
           <p className="eyebrow">Review</p>
           <h2 id="summary-title">Summary</h2>
-        </div>
-      </div>
 
-      <dl className="summary-facts">
-        <SummaryFact label="Employees" value={employees.length} />
-        <SummaryFact label="Shifts" value={shifts.length} />
-        <SummaryFact label="Total hours" value={formatHours(totalHours)} />
-      </dl>
-
-      <section className="summary-section" aria-labelledby="hours-title">
-        <h3 id="hours-title">Weekly hours</h3>
-        <div className="summary-employee-list">
-          {sortedEmployees.map((employee) => {
-            const hours = weeklyHoursByEmployee[employee.id] ?? 0;
-            const shiftCount = shiftCountsByEmployee.get(employee.id) ?? 0;
-
-            return (
-              <div className="summary-employee-row" key={employee.id}>
-                <div>
-                  <strong>{employee.name}</strong>
-                  <span>
-                    {shiftCount} {shiftCount === 1 ? "shift" : "shifts"}
-                  </span>
-                </div>
-                <strong>{formatHours(hours)}</strong>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {onExportCsv ? (
-        <section className="summary-section export-section">
-          <button
-            className="primary-button small"
-            type="button"
-            onClick={onExportCsv}
-          >
-            Export CSV
-          </button>
+          <dl className="summary-facts">
+            <SummaryFact label="Employees" value={employees.length} />
+            <SummaryFact label="Shifts" value={shifts.length} />
+            <SummaryFact label="Total hours" value={formatHours(totalHours)} />
+          </dl>
         </section>
-      ) : null}
+
+        <section
+          className="review-weekly-hours"
+          aria-labelledby="hours-title"
+        >
+          <h3 id="hours-title">Weekly hours</h3>
+          <div className="summary-employee-list">
+            {sortedEmployees.map((employee) => {
+              const hours = weeklyHoursByEmployee[employee.id] ?? 0;
+              const shiftCount = shiftCountsByEmployee.get(employee.id) ?? 0;
+
+              return (
+                <div className="summary-employee-row" key={employee.id}>
+                  <div>
+                    <strong>{employee.name}</strong>
+                    <span>
+                      {shiftCount} {shiftCount === 1 ? "shift" : "shifts"}
+                    </span>
+                  </div>
+                  <strong>{formatHours(hours)}</strong>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {onExportCsv ? (
+          <section className="review-actions" aria-label="Review actions">
+            <button
+              className="primary-button small"
+              type="button"
+              onClick={onExportCsv}
+            >
+              Export CSV
+            </button>
+          </section>
+        ) : null}
+      </div>
     </aside>
   );
 }

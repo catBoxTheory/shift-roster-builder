@@ -34,26 +34,14 @@ const shifts = [
 ];
 
 describe("buildRosterCsv", () => {
-  test("exports sorted shift rows with hours and conflict notes", () => {
-    const csv = buildRosterCsv({
-      employees,
-      shifts,
-      conflicts: [
-        {
-          type: "overlap",
-          employeeId: "emp-alex",
-          day: 0,
-          shiftIds: ["shift-alex-mon"],
-          message: "Employee has overlapping shifts on the same day."
-        }
-      ]
-    });
+  test("exports sorted shift rows with hours", () => {
+    const csv = buildRosterCsv({ employees, shifts });
 
     expect(csv).toBe(
       [
-        "Employee,Role,Day,Start,End,Hours,Conflict Notes",
-        "Alex Chen,Cashier,Mon,09:00,17:00,8,Overlapping shifts",
-        '"Blair, Wong",Cook,Tue,10:00,16:00,6,'
+        "Employee,Role,Day,Start,End,Hours",
+        "Alex Chen,Cashier,Mon,09:00,17:00,8",
+        '"Blair, Wong",Cook,Tue,10:00,16:00,6'
       ].join("\n")
     );
   });
@@ -76,16 +64,15 @@ describe("buildRosterCsv", () => {
           startTime: "08:30",
           endTime: "13:30"
         }
-      ],
-      conflicts: []
+      ]
     });
 
     expect(csv).toContain('"Casey ""CJ"" Lee"');
   });
 
   test("exports only the header when there are no shifts", () => {
-    expect(buildRosterCsv({ employees, shifts: [], conflicts: [] })).toBe(
-      "Employee,Role,Day,Start,End,Hours,Conflict Notes"
+    expect(buildRosterCsv({ employees, shifts: [] })).toBe(
+      "Employee,Role,Day,Start,End,Hours"
     );
   });
 });

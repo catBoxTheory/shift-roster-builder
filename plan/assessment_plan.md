@@ -33,9 +33,10 @@ The most important strategy is to ship a clean, working core with clear reasonin
 - Stage-by-stage documentation is maintained under `docs/`.
 - Phase 8 drag-and-drop shift reassignment is complete.
 - Phase 9 employee availability preferences is complete.
-- Next phase: Phase 10 README and submission polish.
+- Phase 10 submission polish is in progress: CSV export has been simplified to the six reviewer-useful columns; README, screenshot/demo, and email reply still remain.
+- Next phase: complete Phase 10 README and submission polish.
 
-Phase 8 and Phase 9 are complete locally and documented. The remaining work is final README polish, screenshot/demo asset, and email reply.
+Phase 8 and Phase 9 are complete locally and documented. Phase 10 has started locally with CSV simplification; the remaining work is final README polish, screenshot/demo asset, and email reply.
 
 ---
 
@@ -92,7 +93,7 @@ Shift Roster Builder/
 │   │   ├── RosterGrid.jsx          # Weekly grid: days as columns, employees as rows
 │   │   ├── RosterGrid.test.jsx
 │   │   ├── ShiftEditor.jsx         # Create/edit shift form or modal
-│   │   ├── SummaryPanel.jsx        # Weekly totals, conflicts, export action
+│   │   ├── SummaryPanel.jsx        # Weekly totals and export action
 │   │   ├── SummaryPanel.test.jsx
 │   │   └── ConflictBadge.jsx       # Visual conflict indicator
 │   ├── hooks/
@@ -207,7 +208,7 @@ Interaction model:
 - Click an employee/day cell to create a shift.
 - Click an existing shift card to edit or remove it.
 - Shift editor includes employee, role, day, start time, and end time.
-- Conflicting shifts show a visible badge and an explanation.
+- Invalid or conflicting shift attempts are blocked with inline errors before they are saved.
 - Inline validation explains invalid employee names, empty role selections, invalid shift times, and invalid shift roles.
 
 Visual standards:
@@ -326,39 +327,39 @@ Completed steps:
 
 Phase 6 used test-first development. The first SummaryPanel focused test failed because `SummaryPanel.jsx` was missing; the first RosterGrid conflict test failed because cards were not yet marked as conflicting. Post-review corrections removed visible conflict counts, blocked conflicting shift add/edit attempts with inline editor errors, and removed the summary conflict-details section. The final focused component tests passed, the full suite passed with 47 tests, and Browser validation confirmed an overlapping shift attempt stays in the editor, does not leak into the employee panel, and leaves the summary without conflict details.
 
-### Phase 7: Stretch Goals
+### Phase 7: CSV Export Stretch Goal - Complete
 
 Goal: add one low-risk stretch feature after the required app passed review.
 
 Completed steps:
 
 1. Implement CSV export of the weekly roster.
-2. Include employee, role, day, start/end, hours, and conflict notes.
+2. Include employee, role, day, start/end, and hours in the final reviewer-facing export.
 3. Add spreadsheet-safe CSV escaping for commas, quotes, and newline-like values.
 4. Add an `Export CSV` action to the summary panel.
 5. Cover CSV formatting and export-button wiring with tests.
 6. Create `docs/phase_7_stretch_goals.md` using `docs/phase_template.md`.
 
-Drag-and-drop and availability preferences were intentionally skipped. CSV export was the preferred stretch because it is useful, small, and easy to verify without destabilizing the completed core workflow.
+Phase 7 deliberately focused on CSV export first because it is useful, small, and easy to verify without destabilizing the completed core workflow. Drag-and-drop and availability preferences were deferred into Phase 8 and Phase 9, where they are tracked as separate stretch features.
 
-### Phase 8: Drag-and-Drop Shift Reassignment
+### Phase 8: Drag-and-Drop Shift Reassignment - Complete
 
-Goal: add drag-and-drop to reassign shifts between employees and days.
+Goal: drag-and-drop to reassign a shift to a different employee or day.
 
 Completed steps:
 
 1. Make shift cards draggable using native HTML5 Drag and Drop API (no new dependencies).
 2. Make roster grid cells valid drop targets.
 3. On drop, validate the target: employee must have the shift's role, and the move must not create a conflict.
-4. If valid, dispatch a shift edit to update the employee and/or day.
+4. If valid, dispatch a dedicated `shift/move` action to update the employee and/or day while keeping the shift ID stable.
 5. If invalid, reject the drop and show an inline error in the shift editor area.
 6. Add tests for drag start, drop validation, and successful/failed moves.
 7. Browser verification on desktop: drag a shift card to a different cell and confirm it moves or is rejected.
 8. Create `docs/phase_8_drag_drop.md` using `docs/phase_template.md`.
 
-### Phase 9: Employee Availability Preferences
+### Phase 9: Employee Availability Preferences - Complete
 
-Goal: let managers set per-employee availability constraints that pre-validate shift assignments.
+Goal: add employee availability preferences, such as "Alex cannot work Mondays", that pre-validate assignments before they are saved.
 
 Completed steps:
 
@@ -367,14 +368,16 @@ Completed steps:
 3. Add availability validation to the reducer: block shift assignment on an unavailable day.
 4. Show availability indicators (e.g. greyed-out day columns or badges) in the employee panel and grid.
 5. Block conflicting assignments with an inline error, same pattern as conflict blocking in Phase 6.
-6. Include availability in CSV export notes if relevant.
+6. Keep availability as a pre-validation UI/reducer concern; do not add CSV notes because the final export focuses on scheduled shift data only.
 7. Add tests for availability validation logic and UI wiring.
 8. Browser verification: set an employee as unavailable on Monday, attempt to assign a Monday shift, confirm it is blocked.
 9. Create `docs/phase_9_availability.md` using `docs/phase_template.md`.
 
-### Phase 10: README and Submission Polish
+### Phase 10: README and Submission Polish - In Progress
 
 Goal: make the work easy to review and strong for the Problem Decomposition score.
+
+Latest update: Phase 10 has started by simplifying CSV export. The conflict-notes column was removed because normal UI workflows now block invalid conflicts before export, so the CSV should focus on the core roster fields: employee, role, day, start, end, and hours.
 
 README should include:
 
@@ -404,7 +407,7 @@ Submission steps:
 | Assessment Area | Weight | Plan Alignment |
 | --- | ---: | --- |
 | Code Quality and Structure | 30% | Small components, reducer-based state, utility tests, minimal dependencies, clear names |
-| UI/UX Design | 30% | Manager-focused app screen, clear grid, visible conflicts, summary panel, responsive behavior |
+| UI/UX Design | 30% | Manager-focused app screen, clear grid, conflict-prevention errors, drag/drop feedback, availability indicators, summary panel, responsive behavior |
 | Problem Decomposition | 25% | README explains data model, architecture, tradeoffs, AI usage, and limitations |
 | Functionality and Correctness | 15% | All five core requirements implemented and verified with tests/browser QA |
 
@@ -421,9 +424,9 @@ Submission steps:
 | Phase 5: Roster grid/editor | Complete | 5:30 |
 | Phase 6: Conflicts/summary | Complete | 6:30 |
 | Phase 7: Stretch goals | Complete | 7:30 |
-| Phase 8: Drag-and-drop | 1.5 hr | 9:00 |
-| Phase 9: Availability preferences | 1.5 hr | 10:30 |
-| Phase 10: README/submission polish | 1 hr | 11:30 |
+| Phase 8: Drag-and-drop | Complete | 9:00 |
+| Phase 9: Availability preferences | Complete | 10:30 |
+| Phase 10: README/submission polish | In progress | 11:30 |
 
 Total target: about 11.5 hours.
 
@@ -436,10 +439,10 @@ Functional checks:
 1. Add, edit, and remove employees.
 2. Assign employees to day/time shifts.
 3. Display all assignments in the weekly grid.
-4. Flag overlapping same-day shifts.
-5. Flag more than 5 consecutive scheduled days.
+4. Block overlapping same-day shifts with an inline error.
+5. Block more than 5 consecutive scheduled days with an inline error.
 6. Show correct weekly total hours per employee.
-7. Export CSV if the stretch goal is implemented.
+7. Export CSV with employee, role, day, start, end, and hours columns.
 8. Drag-and-drop a shift card to a different cell (valid move succeeds, invalid move is rejected).
 9. Set employee availability (unavailable days) and confirm blocked assignments show inline errors.
 
@@ -457,7 +460,7 @@ Browser checks:
 1. Desktop layout is readable and no text overlaps.
 2. Mobile layout is usable.
 3. Shift editor works from empty cells and existing shift cards.
-4. Conflict indicators are visible and understandable.
+4. Conflict-prevention errors are visible and understandable.
 5. README screenshot or demo accurately reflects the final app.
 
 ---

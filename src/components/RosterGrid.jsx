@@ -137,7 +137,6 @@ export default function RosterGrid({
           <p className="eyebrow">Week</p>
           <h2 id="grid-title">Roster Grid</h2>
         </div>
-        <span className="count-pill">{shifts.length}</span>
       </div>
 
       <div className="roster-table" role="table" aria-label="Weekly roster">
@@ -220,7 +219,7 @@ export default function RosterGrid({
                           onDragEnd={handleDragEnd}
                         >
                           <span className="shift-role">{shift.role}</span>
-                          <span>
+                          <span className="shift-time">
                             {shift.startTime}-{shift.endTime}
                           </span>
                           {conflictCount > 0 ? (

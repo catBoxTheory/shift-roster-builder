@@ -60,6 +60,12 @@ describe("RosterGrid", () => {
     expect(container.textContent).toContain("09:00-17:00");
   });
 
+  test("does not show a header count pill", () => {
+    const { container } = renderGrid();
+
+    expect(container.querySelector(".roster-grid-panel .count-pill")).toBeNull();
+  });
+
   test("marks conflicting shift cards with a visible badge", () => {
     const conflictShifts = [
       ...shifts,

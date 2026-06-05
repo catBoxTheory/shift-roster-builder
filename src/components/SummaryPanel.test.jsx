@@ -125,6 +125,29 @@ describe("SummaryPanel", () => {
     expect(rows[2]).toContain("5.25h");
   });
 
+  test("groups summary facts and weekly hours for a side-by-side review layout", () => {
+    const { container } = renderSummary();
+
+    const layout = container.querySelector(".review-layout");
+    const overview = container.querySelector(".review-summary");
+    const weeklyHours = container.querySelector(".review-weekly-hours");
+
+    expect(layout).not.toBeNull();
+    expect(overview?.querySelector(".summary-facts")).not.toBeNull();
+    expect(weeklyHours?.textContent).toContain("Weekly hours");
+  });
+
+  test("places export action in a bottom row after summary and weekly hours", () => {
+    const { container } = renderSummary({ onExportCsv: vi.fn() });
+
+    const layoutChildren = [...container.querySelector(".review-layout").children];
+
+    expect(layoutChildren[0].className).toBe("review-summary");
+    expect(layoutChildren[1].className).toBe("review-weekly-hours");
+    expect(layoutChildren[2].className).toBe("review-actions");
+    expect(layoutChildren[2].textContent).toContain("Export CSV");
+  });
+
   test("does not show an empty conflict state when the roster is clean", () => {
     const { container } = renderSummary();
 

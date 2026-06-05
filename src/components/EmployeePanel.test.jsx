@@ -39,6 +39,12 @@ describe("EmployeePanel", () => {
     expect(container.textContent).toContain("Cook");
   });
 
+  test("does not show a header count pill", () => {
+    const { container } = renderPanel();
+
+    expect(container.querySelector(".employee-panel .count-pill")).toBeNull();
+  });
+
   test("submits a new employee with selected roles", () => {
     const onAddEmployee = vi.fn();
     const { container } = renderPanel({ onAddEmployee });

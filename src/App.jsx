@@ -1,6 +1,7 @@
 import EmployeePanel from "./components/EmployeePanel.jsx";
 import RosterGrid from "./components/RosterGrid.jsx";
 import SummaryPanel from "./components/SummaryPanel.jsx";
+import optixLogo from "./assets/optix-logo.png";
 import { useRoster } from "./hooks/useRoster.js";
 import { buildRosterCsv, buildRosterCsvFileName } from "./utils/csvExport.js";
 
@@ -10,8 +11,7 @@ export default function App() {
   function exportRosterCsv() {
     const csv = buildRosterCsv({
       employees: roster.employees,
-      shifts: roster.shifts,
-      conflicts: roster.conflicts
+      shifts: roster.shifts
     });
     downloadTextFile(csv, buildRosterCsvFileName());
   }
@@ -19,18 +19,16 @@ export default function App() {
   return (
     <main className="app-shell">
       <header className="app-header" aria-labelledby="app-title">
-        <div>
-          <p className="stage-label">Optix Stage 2 Assessment</p>
-          <h1 id="app-title">Shift Roster Builder</h1>
-          <p className="app-subtitle">
-            Employee management, weekly shift assignment, drag-and-drop
-            reassignment, availability preferences, conflict checks, hour
-            summaries, and CSV export are active.
-          </p>
-        </div>
-        <div className="status-card" aria-label="Project status">
-          <span className="status-dot" aria-hidden="true" />
-          <span>Phase 10 in progress</span>
+        <div className="brand-lockup">
+          <img
+            className="brand-logo"
+            src={optixLogo}
+            alt="Optix Solutions Limited logo"
+          />
+          <div>
+            <p className="stage-label">Optix Stage 2 Assessment</p>
+            <h1 id="app-title">Shift Roster Builder</h1>
+          </div>
         </div>
       </header>
 
