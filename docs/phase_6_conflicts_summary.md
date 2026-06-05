@@ -6,11 +6,12 @@
 - Date: 2026-06-05
 - Conflict summary commit: `c621a86 feat: add conflict summary panel`
 - Conflict summary correction commit: `9dcea6b fix: simplify conflict summary flags`
+- Conflict blocking correction commit: `d5978b0 fix: block conflicting shift changes`
 - GitHub: [catBoxTheory/shift-roster-builder](https://github.com/catBoxTheory/shift-roster-builder)
 
 ## Goal
 
-Make roster correctness visible to the reviewer. The app now highlights conflicting shifts in the grid and replaces the placeholder summary with totals, weekly hours, and readable conflict explanations.
+Make roster correctness visible to the reviewer. The app highlights invalid derived conflict states, replaces the placeholder summary with totals and readable conflict explanations, and now blocks users from creating conflicting shifts through add/edit actions.
 
 ## Scope
 
@@ -25,6 +26,7 @@ In scope:
 - Wire conflict and summary state through `App`.
 - Add component tests before implementation.
 - Verify the rendered conflict flow in Browser on desktop and mobile-width viewports.
+- Add post-review reducer validation so conflicting shift add/edit attempts are rejected before they enter the roster.
 
 Out of scope:
 
@@ -41,6 +43,8 @@ The summary panel is intentionally compact. It gives the reviewer quick counts f
 
 After user and external-model testing, the visible conflict counts were removed because they added noise without improving the scheduling decision. The conflict details now flag each employee once per conflict type: one overlap flag if the employee has at least one overlapping shift, one consecutive-days flag if they exceed the 5-day limit, and two flags only when both conflict types apply.
 
+After a later review, the interaction model changed again: the manager should not be allowed to save a shift that would create an overlap or schedule an employee for more than 5 consecutive days. The conflict display remains useful for derived or preloaded invalid states, but normal UI entry now prevents those states.
+
 ## Design Decisions
 
 - Conflict cards use both a left accent and a text badge, so the signal is not color-only.
@@ -51,6 +55,8 @@ After user and external-model testing, the visible conflict counts were removed 
 - Browser QA created a real overlapping shift through the UI instead of relying only on static sample data.
 - Conflict counts are not shown in the summary header, summary facts, employee rows, or conflict badges.
 - Conflict details are grouped by employee and conflict type, not by every conflicting shift pair.
+- Shift add/edit actions now validate the proposed roster before committing it.
+- Overlap and consecutive-day conflicts return clear inline errors and leave the previous roster unchanged.
 
 ## AI Tools And Assistants Used
 
@@ -60,6 +66,7 @@ After user and external-model testing, the visible conflict counts were removed 
 - `build-web-apps:react-best-practices`: used to keep derived data and rendering logic simple.
 - Browser plugin: verified the rendered overlap workflow, summary text, console health, and mobile-width layout.
 - Human review: user reported Phase 5 passed after their own testing and another model's testing before Phase 6 started.
+- Post-review human and AI review: prompted the change from accepting-and-flagging conflicts to blocking conflicting shift changes.
 
 ## Verification
 
@@ -68,6 +75,7 @@ Commands run:
 ```bash
 npm test -- src/components/SummaryPanel.test.jsx
 npm test -- src/components/RosterGrid.test.jsx
+npm test -- src/hooks/useRoster.test.js
 npm test
 npm run build
 npm audit --audit-level=moderate
@@ -83,6 +91,10 @@ Results:
 - Full test run passed: 7 files, 38 tests.
 - Production build passed.
 - Dependency audit passed with 0 vulnerabilities.
+- Post-review conflict-blocking tests failed first because the reducer still accepted overlapping and 6-consecutive-day shift changes.
+- Final conflict-blocking focused test run passed: 1 file, 11 tests.
+- Final full test run passed: 8 files, 46 tests.
+- Final production build passed.
 
 Browser checks:
 
@@ -93,6 +105,7 @@ Browser checks:
 - Mobile-width result at `390px`: body width did not overflow, the roster grid remained horizontally scrollable inside the panel, and the conflict cards/details remained present.
 - Console warnings/errors: none.
 - Correction proof at `http://127.0.0.1:4175/`: after creating the same overlap, the summary showed no conflict count pill, no `Conflicts` fact row, no conflict count in employee rows, and one detail item: `Alex Chen has overlapping shifts.`
+- Conflict-blocking proof at `http://127.0.0.1:4177/`: attempted to add a second Monday shift for Alex Chen from `12:00-18:00`; the app showed `Employee already has an overlapping shift.`, kept the roster at 3 shifts, kept `No conflicts`, and logged no console errors.
 
 Covered scenarios:
 
@@ -103,14 +116,17 @@ Covered scenarios:
 - Summary shows two detail rows when one employee has both conflict types.
 - Summary sorts employee rows by weekly hours descending.
 - Summary shows a clean empty state when there are no conflicts.
+- Reducer rejects adding an overlapping shift.
+- Reducer rejects editing a shift into an overlap.
+- Reducer rejects adding a shift that would exceed 5 consecutive days.
 
 ## Known Limitations And Follow-Up
 
 - At the end of Phase 6, CSV export was still pending; it was implemented later in Phase 7.
-- Consecutive-day conflict UI is covered by component tests, but the browser QA focused on the overlap flow because it is faster to create manually.
+- Consecutive-day conflict blocking is covered by reducer tests, while browser QA focused on the overlap flow because it is faster to create manually.
 - Final screenshot/demo capture still belongs in submission polish.
 - No persistence is implemented; data resets on page reload.
 
 ## Reviewer Notes
 
-Phase 6 completes the required correctness visibility: assignments are shown, invalid conflict states are highlighted, and the summary gives the reviewer enough context to trust the scheduling rules.
+Phase 6 completes the required correctness path: normal UI actions prevent invalid schedules, and the conflict UI still explains invalid derived states if they ever appear.

@@ -18,6 +18,7 @@ The most important strategy is to ship a clean, working core with clear reasonin
 - Phase 1 project setup is complete.
 - Phase 6 feature commit: `c621a86 feat: add conflict summary panel`
 - Phase 6 correction commit: `9dcea6b fix: simplify conflict summary flags`
+- Conflict blocking correction commit: `d5978b0 fix: block conflicting shift changes`
 - Phase 7 feature commit: `6239b54 feat: add roster csv export`
 - GitHub repository: [catBoxTheory/shift-roster-builder](https://github.com/catBoxTheory/shift-roster-builder)
 - Remote branch: `main` tracking `origin/main`
@@ -25,11 +26,12 @@ The most important strategy is to ship a clean, working core with clear reasonin
 - Phase 4 employee panel UI is complete.
 - Phase 5 weekly roster grid and shift editor UI is complete.
 - Phase 6 conflict UI and summary panel are complete.
+- Post-review conflict prevention is complete: conflicting shift add/edit attempts are rejected with an inline error.
 - Phase 7 CSV export stretch goal is complete.
 - Stage-by-stage documentation is maintained under `docs/`.
 - Next phase: Phase 8 submission polish
 
-Phase 7 is complete locally and documented. The remaining work is submission polish, including the final README, screenshot/demo asset, and email reply.
+Phase 7 and the post-review conflict-prevention correction are complete locally and documented. The remaining work is submission polish, including the final README, screenshot/demo asset, and email reply.
 
 ---
 
@@ -315,7 +317,7 @@ Completed steps:
 5. Sort summary rows by total hours descending, with conflicts easy to spot.
 6. Create `docs/phase_6_conflicts_summary.md` using `docs/phase_template.md`.
 
-Phase 6 used test-first development. The first SummaryPanel focused test failed because `SummaryPanel.jsx` was missing; the first RosterGrid conflict test failed because cards were not yet marked as conflicting. A post-review correction removed visible conflict counts and grouped conflict details once per employee per conflict type. The final focused tests passed, the full suite passed with 38 tests, and Browser validation confirmed the overlap flow on desktop plus mobile-width layout behavior.
+Phase 6 used test-first development. The first SummaryPanel focused test failed because `SummaryPanel.jsx` was missing; the first RosterGrid conflict test failed because cards were not yet marked as conflicting. A post-review correction removed visible conflict counts and grouped conflict details once per employee per conflict type. A later post-review correction changed the user flow so conflicting shift add/edit attempts are rejected with inline errors instead of being accepted and flagged afterward. The final conflict-blocking hook tests passed, the full suite passed with 46 tests, and Browser validation confirmed an overlapping shift attempt is blocked while the roster remains clean.
 
 ### Phase 7: Stretch Goals
 
