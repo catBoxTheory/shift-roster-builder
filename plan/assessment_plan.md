@@ -18,16 +18,18 @@ The most important strategy is to ship a clean, working core with clear reasonin
 - Phase 1 project setup is complete.
 - Phase 6 feature commit: `c621a86 feat: add conflict summary panel`
 - Phase 6 correction commit: `9dcea6b fix: simplify conflict summary flags`
+- Phase 7 feature commit: `6239b54 feat: add roster csv export`
 - GitHub repository: [catBoxTheory/shift-roster-builder](https://github.com/catBoxTheory/shift-roster-builder)
 - Remote branch: `main` tracking `origin/main`
 - Verified checks: `npm run build`, `npm test`, `npm audit`, and Vite/Browser smoke testing
 - Phase 4 employee panel UI is complete.
 - Phase 5 weekly roster grid and shift editor UI is complete.
 - Phase 6 conflict UI and summary panel are complete.
+- Phase 7 CSV export stretch goal is complete.
 - Stage-by-stage documentation is maintained under `docs/`.
-- Next phase: Phase 7, Stretch Goals, or Phase 8 submission polish if time is tight
+- Next phase: Phase 8 submission polish
 
-Phase 6 is complete locally and documented, including the post-review conflict-summary correction.
+Phase 7 is complete locally and documented. The remaining work is submission polish, including the final README, screenshot/demo asset, and email reply.
 
 ---
 
@@ -67,7 +69,13 @@ Shift Roster Builder/
 ├── docs/
 │   ├── README.md                   # Documentation index
 │   ├── phase_template.md           # Reusable documentation template
-│   └── phase_1_project_setup.md    # Completed Phase 1 log
+│   ├── phase_1_project_setup.md    # Completed Phase 1 log
+│   ├── phase_2_core_logic.md       # Completed Phase 2 log
+│   ├── phase_3_roster_state.md     # Completed Phase 3 log
+│   ├── phase_4_employee_panel.md   # Completed Phase 4 log
+│   ├── phase_5_roster_grid.md      # Completed Phase 5 log
+│   ├── phase_6_conflicts_summary.md # Completed Phase 6 log
+│   └── phase_7_stretch_goals.md    # Completed Phase 7 log
 ├── src/
 │   ├── components/
 │   │   ├── EmployeePanel.jsx       # Add, edit, remove employees and roles
@@ -88,12 +96,11 @@ Shift Roster Builder/
 │   │   ├── conflicts.test.js
 │   │   ├── summary.js              # Weekly hour totals by employee
 │   │   ├── summary.test.js
-│   │   └── csvExport.js            # Optional CSV export
+│   │   ├── csvExport.js            # CSV export formatting
+│   │   └── csvExport.test.js
 │   ├── App.jsx
 │   ├── main.jsx
 │   └── styles.css
-├── screenshots/
-│   └── roster_builder.png          # Add after UI is ready
 ├── index.html
 ├── package.json
 ├── vite.config.js
@@ -184,7 +191,7 @@ Planned layout:
 
 - Left panel: employee list, role tags, add/edit/remove controls
 - Center: weekly roster grid, days as columns and employees as rows
-- Right panel: weekly summary, total hours per employee, conflict count, CSV export
+- Right panel: weekly summary, total hours per employee, conflict details, CSV export
 
 Interaction model:
 
@@ -304,7 +311,7 @@ Completed steps:
 1. Highlight overlapping shifts and consecutive-day conflicts.
 2. Add `ConflictBadge` with a readable explanation.
 3. Show total weekly hours per employee.
-4. Show conflict counts in the summary panel.
+4. Show readable conflict details in the summary panel.
 5. Sort summary rows by total hours descending, with conflicts easy to spot.
 6. Create `docs/phase_6_conflicts_summary.md` using `docs/phase_template.md`.
 
@@ -312,17 +319,18 @@ Phase 6 used test-first development. The first SummaryPanel focused test failed 
 
 ### Phase 7: Stretch Goals
 
-Attempt only after the core is stable and verified.
+Goal: add one low-risk stretch feature after the required app passed review.
 
-Priority:
+Completed steps:
 
-1. CSV export of the weekly roster.
-2. Mobile-responsive polish.
-3. Availability preferences.
-4. Drag-and-drop only if time remains.
-5. Create `docs/phase_7_stretch_goals.md` if any stretch goals are implemented.
+1. Implement CSV export of the weekly roster.
+2. Include employee, role, day, start/end, hours, and conflict notes.
+3. Add spreadsheet-safe CSV escaping for commas, quotes, and newline-like values.
+4. Add an `Export CSV` action to the summary panel.
+5. Cover CSV formatting and export-button wiring with tests.
+6. Create `docs/phase_7_stretch_goals.md` using `docs/phase_template.md`.
 
-CSV export is the preferred stretch because it is useful, small, and easy to verify. Drag-and-drop is lowest priority because it can consume time without improving the required scoring areas as much.
+Drag-and-drop and availability preferences were intentionally skipped. CSV export was the preferred stretch because it is useful, small, and easy to verify without destabilizing the completed core workflow.
 
 ### Phase 8: README and Submission Polish
 
@@ -372,7 +380,7 @@ Submission steps:
 | Phase 4: Employee panel | Complete | 3:30 |
 | Phase 5: Roster grid/editor | Complete | 5:30 |
 | Phase 6: Conflicts/summary | Complete | 6:30 |
-| Phase 7: Stretch goals | 1 hr | 7:30 |
+| Phase 7: Stretch goals | Complete | 7:30 |
 | Phase 8: README/submission polish | 1 hr | 8:30 |
 
 Total target: about 8.5 hours.

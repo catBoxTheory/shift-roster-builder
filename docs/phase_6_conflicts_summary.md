@@ -19,7 +19,7 @@ In scope:
 - Add `ConflictBadge`.
 - Highlight conflicting shift cards in `RosterGrid`.
 - Build `SummaryPanel`.
-- Show employee count, shift count, total hours, and conflict count.
+- Show employee count, shift count, total hours, and readable conflict details.
 - Show weekly hours per employee sorted high-to-low.
 - Show conflict explanations for same-day overlaps and more-than-5-consecutive-day conflicts.
 - Wire conflict and summary state through `App`.
@@ -106,7 +106,7 @@ Covered scenarios:
 
 ## Known Limitations And Follow-Up
 
-- CSV export is still not implemented.
+- At the end of Phase 6, CSV export was still pending; it was implemented later in Phase 7.
 - Consecutive-day conflict UI is covered by component tests, but the browser QA focused on the overlap flow because it is faster to create manually.
 - Final screenshot/demo capture still belongs in submission polish.
 - No persistence is implemented; data resets on page reload.

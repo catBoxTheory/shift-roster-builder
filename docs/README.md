@@ -18,7 +18,7 @@ The assessment email specifically encourages documenting:
 | Phase 4: Employee Panel | Complete | [phase_4_employee_panel.md](./phase_4_employee_panel.md) |
 | Phase 5: Weekly Roster Grid and Shift Editor | Complete | [phase_5_roster_grid.md](./phase_5_roster_grid.md) |
 | Phase 6: Conflict UI and Summary Panel | Complete | [phase_6_conflicts_summary.md](./phase_6_conflicts_summary.md) |
-| Phase 7: Stretch Goals | Not started | Use [phase_template.md](./phase_template.md) |
+| Phase 7: Stretch Goals | Complete | [phase_7_stretch_goals.md](./phase_7_stretch_goals.md) |
 | Phase 8: README and Submission Polish | Not started | Use [phase_template.md](./phase_template.md) |
 
 ## Documentation Rule For Each Phase
