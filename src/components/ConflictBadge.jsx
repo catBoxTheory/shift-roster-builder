@@ -1,10 +1,8 @@
-export default function ConflictBadge({ count = 1 }) {
-  const label = count > 1 ? `${count} conflicts` : "Conflict";
-
+export default function ConflictBadge() {
   return (
-    <span className="conflict-badge" aria-label={label}>
+    <span className="conflict-badge" aria-label="Conflict">
       <span aria-hidden="true">!</span>
-      {label}
+      Conflict
     </span>
   );
 }

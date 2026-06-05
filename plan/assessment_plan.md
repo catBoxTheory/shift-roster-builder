@@ -17,6 +17,7 @@ The most important strategy is to ship a clean, working core with clear reasonin
 
 - Phase 1 project setup is complete.
 - Phase 6 feature commit: `c621a86 feat: add conflict summary panel`
+- Phase 6 correction commit: pending
 - GitHub repository: [catBoxTheory/shift-roster-builder](https://github.com/catBoxTheory/shift-roster-builder)
 - Remote branch: `main` tracking `origin/main`
 - Verified checks: `npm run build`, `npm test`, `npm audit`, and Vite/Browser smoke testing
@@ -26,7 +27,7 @@ The most important strategy is to ship a clean, working core with clear reasonin
 - Stage-by-stage documentation is maintained under `docs/`.
 - Next phase: Phase 7, Stretch Goals, or Phase 8 submission polish if time is tight
 
-Phase 6 is complete locally and documented.
+Phase 6 is complete locally and documented. A post-review conflict-summary correction is ready to commit.
 
 ---
 
@@ -307,7 +308,7 @@ Completed steps:
 5. Sort summary rows by total hours descending, with conflicts easy to spot.
 6. Create `docs/phase_6_conflicts_summary.md` using `docs/phase_template.md`.
 
-Phase 6 used test-first development. The first SummaryPanel focused test failed because `SummaryPanel.jsx` was missing; the first RosterGrid conflict test failed because cards were not yet marked as conflicting. The final focused tests passed, the full suite passed with 36 tests, and Browser validation confirmed the overlap flow on desktop plus mobile-width layout behavior.
+Phase 6 used test-first development. The first SummaryPanel focused test failed because `SummaryPanel.jsx` was missing; the first RosterGrid conflict test failed because cards were not yet marked as conflicting. A post-review correction removed visible conflict counts and grouped conflict details once per employee per conflict type. The final focused tests passed, the full suite passed with 38 tests, and Browser validation confirmed the overlap flow on desktop plus mobile-width layout behavior.
 
 ### Phase 7: Stretch Goals
 

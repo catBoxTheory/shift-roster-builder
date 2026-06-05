@@ -141,7 +141,7 @@ export default function RosterGrid({
                             {shift.startTime}-{shift.endTime}
                           </span>
                           {conflictCount > 0 ? (
-                            <ConflictBadge count={conflictCount} />
+                            <ConflictBadge />
                           ) : null}
                         </button>
                       );

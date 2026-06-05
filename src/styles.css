@@ -145,11 +145,6 @@ h3 {
   text-align: center;
 }
 
-.count-pill.warning {
-  color: #8a3f00;
-  background: #fff1d6;
-}
-
 .employee-form {
   display: grid;
   gap: 10px;

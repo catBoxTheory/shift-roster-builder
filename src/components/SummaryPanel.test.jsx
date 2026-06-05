@@ -74,13 +74,69 @@ describe("SummaryPanel", () => {
     expect(container.textContent).toContain("4");
     expect(container.textContent).toContain("Total hours");
     expect(container.textContent).toContain("25.75h");
-    expect(container.textContent).toContain("Conflicts");
-    expect(container.textContent).toContain("2");
     expect(container.textContent).toContain("Alex Chen");
-    expect(container.textContent).toContain("overlapping shifts on Mon");
+    expect(container.textContent).toContain("has overlapping shifts");
     expect(container.textContent).toContain("Blair Wong");
     expect(container.textContent).toContain("more than 5 consecutive days");
-    expect(container.textContent).toContain("Mon-Sat");
+  });
+
+  test("does not show conflict counts in the summary", () => {
+    const { container } = renderSummary({
+      conflicts,
+      weeklyHoursByEmployee: {
+        "emp-alex": 8,
+        "emp-blair": 12.5,
+        "emp-casey": 5.25
+      }
+    });
+
+    const factLabels = [...container.querySelectorAll(".summary-facts dt")].map(
+      (item) => item.textContent
+    );
+    const rows = [...container.querySelectorAll(".summary-employee-row")].map(
+      (row) => row.textContent
+    );
+
+    expect(container.querySelector(".summary-panel .count-pill")).toBeNull();
+    expect(factLabels).not.toContain("Conflicts");
+    expect(rows.every((row) => !row.includes("conflict"))).toBe(true);
+  });
+
+  test("flags each employee once per conflict type in conflict details", () => {
+    const repeatedConflicts = [
+      {
+        type: "overlap",
+        employeeId: "emp-alex",
+        day: 0,
+        shiftIds: ["shift-alex-1", "shift-alex-2"],
+        message: "Employee has overlapping shifts on the same day."
+      },
+      {
+        type: "overlap",
+        employeeId: "emp-alex",
+        day: 1,
+        shiftIds: ["shift-alex-3", "shift-alex-4"],
+        message: "Employee has overlapping shifts on the same day."
+      },
+      {
+        type: "consecutive-days",
+        employeeId: "emp-alex",
+        days: [0, 1, 2, 3, 4, 5],
+        shiftIds: ["shift-alex-1"],
+        message: "Employee is scheduled for more than 5 consecutive days."
+      }
+    ];
+
+    const { container } = renderSummary({ conflicts: repeatedConflicts });
+    const details = [...container.querySelectorAll(".conflict-list li")].map(
+      (item) => item.textContent
+    );
+
+    expect(details).toHaveLength(2);
+    expect(details[0]).toContain("Alex Chen has overlapping shifts.");
+    expect(details[1]).toContain(
+      "Alex Chen is scheduled for more than 5 consecutive days."
+    );
   });
 
   test("sorts employees by weekly hours descending", () => {

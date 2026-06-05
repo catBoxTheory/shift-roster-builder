@@ -74,6 +74,13 @@ describe("RosterGrid", () => {
           day: 0,
           shiftIds: ["shift-1", "shift-2"],
           message: "Employee has overlapping shifts on the same day."
+        },
+        {
+          type: "consecutive-days",
+          employeeId: "emp-1",
+          days: [0, 1, 2, 3, 4, 5],
+          shiftIds: ["shift-1"],
+          message: "Employee is scheduled for more than 5 consecutive days."
         }
       ]
     });
@@ -90,6 +97,7 @@ describe("RosterGrid", () => {
     expect(cashierShift.className).toContain("is-conflicting");
     expect(supervisorShift.className).toContain("is-conflicting");
     expect(container.textContent).toContain("Conflict");
+    expect(container.textContent).not.toContain("2 conflicts");
   });
 
   test("creates a shift from an empty employee/day cell", () => {

@@ -1,5 +1,3 @@
-const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-
 export default function SummaryPanel({
   employees,
   shifts,
@@ -11,7 +9,7 @@ export default function SummaryPanel({
     0
   );
   const shiftCountsByEmployee = countShiftsByEmployee(shifts);
-  const conflictCountsByEmployee = countConflictsByEmployee(conflicts);
+  const conflictDetails = summarizeConflicts(conflicts, employees);
   const sortedEmployees = [...employees].sort((first, second) => {
     const hourDifference =
       (weeklyHoursByEmployee[second.id] ?? 0) -
@@ -31,16 +29,12 @@ export default function SummaryPanel({
           <p className="eyebrow">Review</p>
           <h2 id="summary-title">Summary</h2>
         </div>
-        <span className={conflicts.length > 0 ? "count-pill warning" : "count-pill"}>
-          {conflicts.length}
-        </span>
       </div>
 
       <dl className="summary-facts">
         <SummaryFact label="Employees" value={employees.length} />
         <SummaryFact label="Shifts" value={shifts.length} />
         <SummaryFact label="Total hours" value={formatHours(totalHours)} />
-        <SummaryFact label="Conflicts" value={conflicts.length} />
       </dl>
 
       <section className="summary-section" aria-labelledby="hours-title">
@@ -49,7 +43,6 @@ export default function SummaryPanel({
           {sortedEmployees.map((employee) => {
             const hours = weeklyHoursByEmployee[employee.id] ?? 0;
             const shiftCount = shiftCountsByEmployee.get(employee.id) ?? 0;
-            const conflictCount = conflictCountsByEmployee.get(employee.id) ?? 0;
 
             return (
               <div className="summary-employee-row" key={employee.id}>
@@ -57,11 +50,6 @@ export default function SummaryPanel({
                   <strong>{employee.name}</strong>
                   <span>
                     {shiftCount} {shiftCount === 1 ? "shift" : "shifts"}
-                    {conflictCount > 0
-                      ? ` · ${conflictCount} ${
-                          conflictCount === 1 ? "conflict" : "conflicts"
-                        }`
-                      : ""}
                   </span>
                 </div>
                 <strong>{formatHours(hours)}</strong>
@@ -73,12 +61,10 @@ export default function SummaryPanel({
 
       <section className="summary-section" aria-labelledby="conflicts-title">
         <h3 id="conflicts-title">Conflict details</h3>
-        {conflicts.length > 0 ? (
+        {conflictDetails.length > 0 ? (
           <ul className="conflict-list">
-            {conflicts.map((conflict) => (
-              <li key={conflictKey(conflict)}>
-                {formatConflict(conflict, employees)}
-              </li>
+            {conflictDetails.map((detail) => (
+              <li key={detail.key}>{detail.message}</li>
             ))}
           </ul>
         ) : (
@@ -108,50 +94,48 @@ function countShiftsByEmployee(shifts) {
   return counts;
 }
 
-function countConflictsByEmployee(conflicts) {
-  const counts = new Map();
+function summarizeConflicts(conflicts, employees) {
+  const summaries = [];
+  const seen = new Set();
 
   for (const conflict of conflicts) {
-    counts.set(conflict.employeeId, (counts.get(conflict.employeeId) ?? 0) + 1);
+    const key = `${conflict.employeeId}:${conflict.type}`;
+
+    if (seen.has(key)) {
+      continue;
+    }
+
+    seen.add(key);
+
+    const employeeName =
+      employees.find((employee) => employee.id === conflict.employeeId)?.name ??
+      "Employee";
+
+    summaries.push({
+      key,
+      message: formatConflictSummary(
+        conflict.type,
+        employeeName,
+        conflict.message
+      )
+    });
   }
 
-  return counts;
+  return summaries;
 }
 
-function formatConflict(conflict, employees) {
-  const employeeName =
-    employees.find((employee) => employee.id === conflict.employeeId)?.name ??
-    "Employee";
-
-  if (conflict.type === "overlap") {
-    return `${employeeName} has overlapping shifts on ${dayLabel(conflict.day)}.`;
+function formatConflictSummary(type, employeeName, fallbackMessage) {
+  if (type === "overlap") {
+    return `${employeeName} has overlapping shifts.`;
   }
 
-  if (conflict.type === "consecutive-days") {
-    return `${employeeName} is scheduled for more than 5 consecutive days (${formatDayRange(
-      conflict.days
-    )}).`;
+  if (type === "consecutive-days") {
+    return `${employeeName} is scheduled for more than 5 consecutive days.`;
   }
 
-  return `${employeeName}: ${conflict.message}`;
-}
-
-function formatDayRange(days) {
-  if (!Array.isArray(days) || days.length === 0) {
-    return "Unknown days";
-  }
-
-  return `${dayLabel(days[0])}-${dayLabel(days[days.length - 1])}`;
-}
-
-function dayLabel(day) {
-  return DAYS[day] ?? "Day";
+  return `${employeeName}: ${fallbackMessage}`;
 }
 
 function formatHours(hours) {
   return `${Number(hours.toFixed(2))}h`;
-}
-
-function conflictKey(conflict) {
-  return `${conflict.type}:${conflict.employeeId}:${conflict.shiftIds.join(",")}`;
 }
