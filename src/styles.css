@@ -263,6 +263,26 @@ h3 {
   font-weight: 800;
 }
 
+.availability-tag {
+  padding: 3px 8px;
+  border-radius: 999px;
+  color: #8a6d00;
+  background: #fef9e7;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.shift-cell.is-unavailable {
+  background: #fafafa;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 6px,
+    #f0f0f0 6px,
+    #f0f0f0 7px
+  );
+}
+
 .edit-employee {
   display: grid;
   gap: 10px;

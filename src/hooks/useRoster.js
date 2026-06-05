@@ -10,17 +10,20 @@ export const sampleEmployees = [
   {
     id: "emp-alex",
     name: "Alex Chen",
-    roles: ["Cashier", "Supervisor"]
+    roles: ["Cashier", "Supervisor"],
+    unavailableDays: []
   },
   {
     id: "emp-blair",
     name: "Blair Wong",
-    roles: ["Cook"]
+    roles: ["Cook"],
+    unavailableDays: [6]
   },
   {
     id: "emp-casey",
     name: "Casey Lee",
-    roles: ["Barista", "Cleaner"]
+    roles: ["Barista", "Cleaner"],
+    unavailableDays: []
   }
 ];
 
@@ -149,6 +152,16 @@ export function rosterReducer(state, action) {
         return withErrors(state, validation.errors);
       }
 
+      const availabilityError = validateAvailability(
+        validation.value.employeeId,
+        validation.value.day,
+        state
+      );
+
+      if (availabilityError) {
+        return withErrors(state, availabilityError);
+      }
+
       const nextShift = {
         id: action.payload.id,
         ...validation.value
@@ -174,6 +187,16 @@ export function rosterReducer(state, action) {
 
       if (!validation.isValid) {
         return withErrors(state, validation.errors);
+      }
+
+      const availabilityError = validateAvailability(
+        validation.value.employeeId,
+        validation.value.day,
+        state
+      );
+
+      if (availabilityError) {
+        return withErrors(state, availabilityError);
       }
 
       const nextShifts = state.shifts.map((shift) =>
@@ -226,6 +249,16 @@ export function rosterReducer(state, action) {
         });
       }
 
+      const moveAvailabilityError = validateAvailability(
+        targetEmployeeId,
+        targetDay,
+        state
+      );
+
+      if (moveAvailabilityError) {
+        return withErrors(state, moveAvailabilityError);
+      }
+
       const nextShift = {
         ...existingShift,
         employeeId: targetEmployeeId,
@@ -273,6 +306,11 @@ export function createRosterState({ employees, shifts }) {
 export function validateEmployeeInput(input, state, existingEmployeeId = null) {
   const name = input.name?.trim() ?? "";
   const roles = uniqueCleanValues(input.roles ?? []);
+  const unavailableDays = Array.isArray(input.unavailableDays)
+    ? input.unavailableDays.filter(
+        (day) => Number.isInteger(day) && day >= 0 && day <= 6
+      )
+    : [];
   const errors = {};
 
   if (!name) {
@@ -297,7 +335,7 @@ export function validateEmployeeInput(input, state, existingEmployeeId = null) {
 
   return {
     isValid: true,
-    value: { name, roles },
+    value: { name, roles, unavailableDays },
     errors: {}
   };
 }
@@ -336,6 +374,16 @@ export function validateShiftInput(input, state) {
     value: { employeeId, role, day, startTime, endTime },
     errors: {}
   };
+}
+
+function validateAvailability(employeeId, day, state) {
+  const employee = state.employees.find((item) => item.id === employeeId);
+
+  if (employee && (employee.unavailableDays ?? []).includes(day)) {
+    return { availability: "Employee is not available on this day." };
+  }
+
+  return null;
 }
 
 function validateNoProposedShiftConflict(shifts, shiftId) {

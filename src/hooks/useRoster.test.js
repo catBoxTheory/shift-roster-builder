@@ -65,7 +65,7 @@ describe("validateEmployeeInput", () => {
       )
     ).toEqual({
       isValid: true,
-      value: { name: "Alex", roles: ["Cashier"] },
+      value: { name: "Alex", roles: ["Cashier"], unavailableDays: [] },
       errors: {}
     });
   });
@@ -155,7 +155,8 @@ describe("rosterReducer", () => {
     expect(addedState.employees).toContainEqual({
       id: "emp-3",
       name: "Casey",
-      roles: ["Cleaner", "Cook"]
+      roles: ["Cleaner", "Cook"],
+      unavailableDays: []
     });
 
     const editedState = rosterReducer(addedState, {
@@ -171,7 +172,8 @@ describe("rosterReducer", () => {
       .toEqual({
         id: "emp-3",
         name: "Casey Wong",
-        roles: ["Supervisor"]
+        roles: ["Supervisor"],
+        unavailableDays: []
       });
 
     const removedState = rosterReducer(editedState, {
@@ -566,6 +568,148 @@ describe("rosterReducer", () => {
     expect(blockedState.lastErrors).toEqual({
       employeeId: "Target employee does not exist."
     });
+  });
+
+  test("rejects adding a shift on an unavailable day", () => {
+    const state = createRosterState({
+      employees: [
+        {
+          id: "emp-1",
+          name: "Alex",
+          roles: ["Cashier"],
+          unavailableDays: [0]
+        }
+      ],
+      shifts: []
+    });
+
+    const blockedState = rosterReducer(state, {
+      type: "shift/add",
+      payload: {
+        id: "shift-1",
+        employeeId: "emp-1",
+        role: "Cashier",
+        day: 0,
+        startTime: "09:00",
+        endTime: "17:00"
+      }
+    });
+
+    expect(blockedState.shifts).toEqual([]);
+    expect(blockedState.lastErrors).toEqual({
+      availability: "Employee is not available on this day."
+    });
+  });
+
+  test("rejects editing a shift to an unavailable day", () => {
+    const state = createRosterState({
+      employees: [
+        {
+          id: "emp-1",
+          name: "Alex",
+          roles: ["Cashier"],
+          unavailableDays: [3]
+        }
+      ],
+      shifts: [
+        {
+          id: "shift-1",
+          employeeId: "emp-1",
+          role: "Cashier",
+          day: 0,
+          startTime: "09:00",
+          endTime: "17:00"
+        }
+      ]
+    });
+
+    const blockedState = rosterReducer(state, {
+      type: "shift/edit",
+      payload: {
+        id: "shift-1",
+        employeeId: "emp-1",
+        role: "Cashier",
+        day: 3,
+        startTime: "09:00",
+        endTime: "17:00"
+      }
+    });
+
+    expect(blockedState.shifts).toEqual(state.shifts);
+    expect(blockedState.lastErrors).toEqual({
+      availability: "Employee is not available on this day."
+    });
+  });
+
+  test("rejects moving a shift to an unavailable day", () => {
+    const state = createRosterState({
+      employees: [
+        {
+          id: "emp-1",
+          name: "Alex",
+          roles: ["Cashier"]
+        },
+        {
+          id: "emp-2",
+          name: "Blair",
+          roles: ["Cashier"],
+          unavailableDays: [2]
+        }
+      ],
+      shifts: [
+        {
+          id: "shift-1",
+          employeeId: "emp-1",
+          role: "Cashier",
+          day: 0,
+          startTime: "09:00",
+          endTime: "17:00"
+        }
+      ]
+    });
+
+    const blockedState = rosterReducer(state, {
+      type: "shift/move",
+      payload: {
+        shiftId: "shift-1",
+        targetEmployeeId: "emp-2",
+        targetDay: 2
+      }
+    });
+
+    expect(blockedState.shifts).toEqual(state.shifts);
+    expect(blockedState.lastErrors).toEqual({
+      availability: "Employee is not available on this day."
+    });
+  });
+
+  test("allows shifts on available days when some days are unavailable", () => {
+    const state = createRosterState({
+      employees: [
+        {
+          id: "emp-1",
+          name: "Alex",
+          roles: ["Cashier"],
+          unavailableDays: [0, 6]
+        }
+      ],
+      shifts: []
+    });
+
+    const addedState = rosterReducer(state, {
+      type: "shift/add",
+      payload: {
+        id: "shift-1",
+        employeeId: "emp-1",
+        role: "Cashier",
+        day: 1,
+        startTime: "09:00",
+        endTime: "17:00"
+      }
+    });
+
+    expect(addedState.shifts).toHaveLength(1);
+    expect(addedState.lastErrors).toEqual({});
   });
 
   test("resets to sample data", () => {

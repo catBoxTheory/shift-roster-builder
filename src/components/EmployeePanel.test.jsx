@@ -49,7 +49,8 @@ describe("EmployeePanel", () => {
 
     expect(onAddEmployee).toHaveBeenCalledWith({
       name: "Dana",
-      roles: ["Cleaner"]
+      roles: ["Cleaner"],
+      unavailableDays: []
     });
   });
 
@@ -66,7 +67,8 @@ describe("EmployeePanel", () => {
     expect(onEditEmployee).toHaveBeenCalledWith({
       id: "emp-1",
       name: "Alex Wong",
-      roles: ["Cashier", "Cleaner"]
+      roles: ["Cashier", "Cleaner"],
+      unavailableDays: []
     });
   });
 
@@ -105,6 +107,67 @@ describe("EmployeePanel", () => {
     expect(container.textContent).not.toContain(
       "Employee already has an overlapping shift."
     );
+  });
+
+  test("submits a new employee with unavailable days", () => {
+    const onAddEmployee = vi.fn();
+    const { container } = renderPanel({ onAddEmployee });
+
+    typeInto(getInput(container, "Employee name"), "Dana");
+    click(getCheckbox(container, "Cashier"));
+    click(getCheckbox(container, "Unavailable Mon"));
+    click(getCheckbox(container, "Unavailable Fri"));
+    click(getButton(container, "Add employee"));
+
+    expect(onAddEmployee).toHaveBeenCalledWith({
+      name: "Dana",
+      roles: ["Cashier"],
+      unavailableDays: [0, 4]
+    });
+  });
+
+  test("edits employee unavailable days", () => {
+    const employeesWithAvailability = [
+      {
+        id: "emp-1",
+        name: "Alex Chen",
+        roles: ["Cashier"],
+        unavailableDays: [0]
+      }
+    ];
+    const onEditEmployee = vi.fn();
+    const { container } = renderPanel({
+      employees: employeesWithAvailability,
+      onEditEmployee
+    });
+
+    click(getButton(container, "Edit Alex Chen"));
+    click(getCheckbox(container, "Edit unavailable Mon for Alex Chen"));
+    click(getCheckbox(container, "Edit unavailable Wed for Alex Chen"));
+    click(getButton(container, "Save Alex Chen"));
+
+    expect(onEditEmployee).toHaveBeenCalledWith({
+      id: "emp-1",
+      name: "Alex Chen",
+      roles: ["Cashier"],
+      unavailableDays: [2]
+    });
+  });
+
+  test("shows availability tags for employees with unavailable days", () => {
+    const employeesWithAvailability = [
+      {
+        id: "emp-1",
+        name: "Alex Chen",
+        roles: ["Cashier"],
+        unavailableDays: [0, 6]
+      }
+    ];
+    const { container } = renderPanel({
+      employees: employeesWithAvailability
+    });
+
+    expect(container.textContent).toContain("Off: Mon, Sun");
   });
 });
 

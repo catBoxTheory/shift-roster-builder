@@ -167,12 +167,14 @@ export default function RosterGrid({
               const isDropSource =
                 dragState?.employeeId === employee.id &&
                 dragState?.day === dayIndex;
+              const isUnavailable = (employee.unavailableDays ?? []).includes(dayIndex);
 
               return (
                 <div
                   className={[
                     "shift-cell",
-                    isDropTarget && !isDropSource ? "is-drop-target" : ""
+                    isDropTarget && !isDropSource ? "is-drop-target" : "",
+                    isUnavailable ? "is-unavailable" : ""
                   ]
                     .filter(Boolean)
                     .join(" ")}

@@ -31,9 +31,11 @@ The most important strategy is to ship a clean, working core with clear reasonin
 - Summary panel conflict details are removed; the right panel now focuses on counts, weekly hours, and CSV export.
 - Phase 7 CSV export stretch goal is complete.
 - Stage-by-stage documentation is maintained under `docs/`.
-- Next phase: Phase 8 drag-and-drop shift reassignment
+- Phase 8 drag-and-drop shift reassignment is complete.
+- Phase 9 employee availability preferences is complete.
+- Next phase: Phase 10 README and submission polish.
 
-Phase 7 and the post-review UI corrections are complete locally and documented. The remaining stretch phases are drag-and-drop reassignment and employee availability preferences, followed by final submission polish.
+Phase 8 and Phase 9 are complete locally and documented. The remaining work is final README polish, screenshot/demo asset, and email reply.
 
 ---
 

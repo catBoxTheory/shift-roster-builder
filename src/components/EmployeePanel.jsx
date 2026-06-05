@@ -8,6 +8,8 @@ export const ROLE_OPTIONS = [
   "Cleaner"
 ];
 
+export const DAY_OPTIONS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
 export default function EmployeePanel({
   employees,
   lastErrors = {},
@@ -17,25 +19,33 @@ export default function EmployeePanel({
 }) {
   const [newName, setNewName] = useState("");
   const [newRoles, setNewRoles] = useState([]);
+  const [newUnavailableDays, setNewUnavailableDays] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [editName, setEditName] = useState("");
   const [editRoles, setEditRoles] = useState([]);
+  const [editUnavailableDays, setEditUnavailableDays] = useState([]);
   const [pendingRemoveId, setPendingRemoveId] = useState(null);
 
   function startEdit(employee) {
     setEditingId(employee.id);
     setEditName(employee.name);
     setEditRoles(employee.roles);
+    setEditUnavailableDays(employee.unavailableDays ?? []);
     setPendingRemoveId(null);
   }
 
   function submitNewEmployee(event) {
     event.preventDefault();
-    onAddEmployee({ name: newName, roles: newRoles });
+    onAddEmployee({
+      name: newName,
+      roles: newRoles,
+      unavailableDays: newUnavailableDays
+    });
 
     if (newName.trim() && newRoles.length > 0) {
       setNewName("");
       setNewRoles([]);
+      setNewUnavailableDays([]);
     }
   }
 
@@ -43,7 +53,8 @@ export default function EmployeePanel({
     onEditEmployee({
       id: employee.id,
       name: editName,
-      roles: editRoles
+      roles: editRoles,
+      unavailableDays: editUnavailableDays
     });
     setEditingId(null);
   }
@@ -88,6 +99,25 @@ export default function EmployeePanel({
           </div>
         </fieldset>
 
+        <fieldset className="role-fieldset">
+          <legend>Unavailable days</legend>
+          <div className="role-options">
+            {DAY_OPTIONS.map((day, index) => (
+              <label className="role-option" key={day}>
+                <input
+                  aria-label={`Unavailable ${day}`}
+                  type="checkbox"
+                  checked={newUnavailableDays.includes(index)}
+                  onChange={() =>
+                    setNewUnavailableDays(toggleValue(newUnavailableDays, index))
+                  }
+                />
+                <span>{day}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+
         <ErrorList errors={employeeFormErrors(lastErrors)} />
 
         <button className="primary-button" type="submit">
@@ -125,6 +155,23 @@ export default function EmployeePanel({
                       </label>
                     ))}
                   </div>
+                  <div className="role-options compact">
+                    {DAY_OPTIONS.map((day, index) => (
+                      <label className="role-option" key={day}>
+                        <input
+                          aria-label={`Edit unavailable ${day} for ${employee.name}`}
+                          type="checkbox"
+                          checked={editUnavailableDays.includes(index)}
+                          onChange={() =>
+                            setEditUnavailableDays(
+                              toggleValue(editUnavailableDays, index)
+                            )
+                          }
+                        />
+                        <span>{day}</span>
+                      </label>
+                    ))}
+                  </div>
                   <div className="row-actions">
                     <button
                       className="primary-button small"
@@ -153,6 +200,16 @@ export default function EmployeePanel({
                         </span>
                       ))}
                     </div>
+                    {(employee.unavailableDays ?? []).length > 0 ? (
+                      <div className="role-tags">
+                        <span className="availability-tag">
+                          Off:{" "}
+                          {(employee.unavailableDays ?? [])
+                            .map((day) => DAY_OPTIONS[day])
+                            .join(", ")}
+                        </span>
+                      </div>
+                    ) : null}
                   </div>
                   <div className="row-actions">
                     <button

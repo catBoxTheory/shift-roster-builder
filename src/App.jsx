@@ -24,13 +24,13 @@ export default function App() {
           <h1 id="app-title">Shift Roster Builder</h1>
           <p className="app-subtitle">
             Employee management, weekly shift assignment, drag-and-drop
-            reassignment, conflict checks, hour summaries, and CSV export are
-            active.
+            reassignment, availability preferences, conflict checks, hour
+            summaries, and CSV export are active.
           </p>
         </div>
         <div className="status-card" aria-label="Project status">
           <span className="status-dot" aria-hidden="true" />
-          <span>Phase 8 complete</span>
+          <span>Phase 10 in progress</span>
         </div>
       </header>
 
