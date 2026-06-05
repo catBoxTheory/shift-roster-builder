@@ -52,10 +52,11 @@ The drop handler reads the shift ID from the data transfer, looks up the target 
 
 ## AI Tools And Assistants Used
 
-- Codex / ChatGPT: implemented the reducer action, drag-and-drop handlers, tests, styles, and documentation.
+- Claude Code with mimo-v2.5-pro: implemented the reducer action, drag-and-drop handlers, tests, styles, bug fix, and documentation.
 - `test-driven-development`: guided the red-green flow for the reducer move action.
 - `karpathy-guidelines`: kept the feature scoped to drag-and-drop only.
 - `frontend-design`: guided the visual feedback treatment (dim source, highlight target).
+- Human review: user tested the drag-and-drop interaction and reported a stuck transparency bug, which was fixed in a follow-up commit.
 
 ## Verification
 
