@@ -364,6 +364,210 @@ describe("rosterReducer", () => {
     expect(state.conflictingShiftIds).toEqual(new Set(["shift-1", "shift-2"]));
   });
 
+  test("moves a shift to a different employee and day", () => {
+    const state = createRosterState({
+      employees: [
+        {
+          id: "emp-1",
+          name: "Alex",
+          roles: ["Cashier", "Supervisor"]
+        },
+        {
+          id: "emp-2",
+          name: "Blair",
+          roles: ["Cook", "Cashier"]
+        }
+      ],
+      shifts: [
+        {
+          id: "shift-1",
+          employeeId: "emp-1",
+          role: "Cashier",
+          day: 0,
+          startTime: "09:00",
+          endTime: "17:00"
+        }
+      ]
+    });
+
+    const movedState = rosterReducer(state, {
+      type: "shift/move",
+      payload: {
+        shiftId: "shift-1",
+        targetEmployeeId: "emp-2",
+        targetDay: 3
+      }
+    });
+
+    expect(movedState.shifts).toHaveLength(1);
+    expect(movedState.shifts[0]).toMatchObject({
+      id: "shift-1",
+      employeeId: "emp-2",
+      role: "Cashier",
+      day: 3,
+      startTime: "09:00",
+      endTime: "17:00"
+    });
+    expect(movedState.lastErrors).toEqual({});
+  });
+
+  test("rejects moving a shift to an employee who lacks the role", () => {
+    const state = createRosterState({
+      employees: [
+        {
+          id: "emp-1",
+          name: "Alex",
+          roles: ["Cashier", "Supervisor"]
+        },
+        {
+          id: "emp-2",
+          name: "Blair",
+          roles: ["Cook"]
+        }
+      ],
+      shifts: [
+        {
+          id: "shift-1",
+          employeeId: "emp-1",
+          role: "Cashier",
+          day: 0,
+          startTime: "09:00",
+          endTime: "17:00"
+        }
+      ]
+    });
+
+    const blockedState = rosterReducer(state, {
+      type: "shift/move",
+      payload: {
+        shiftId: "shift-1",
+        targetEmployeeId: "emp-2",
+        targetDay: 1
+      }
+    });
+
+    expect(blockedState.shifts).toEqual(state.shifts);
+    expect(blockedState.lastErrors).toEqual({
+      role: "Target employee does not have this shift's role."
+    });
+  });
+
+  test("rejects moving a shift that would create an overlap", () => {
+    const state = createRosterState({
+      employees: [
+        {
+          id: "emp-1",
+          name: "Alex",
+          roles: ["Cashier"]
+        },
+        {
+          id: "emp-2",
+          name: "Blair",
+          roles: ["Cashier"]
+        }
+      ],
+      shifts: [
+        {
+          id: "shift-1",
+          employeeId: "emp-1",
+          role: "Cashier",
+          day: 0,
+          startTime: "09:00",
+          endTime: "17:00"
+        },
+        {
+          id: "shift-2",
+          employeeId: "emp-2",
+          role: "Cashier",
+          day: 2,
+          startTime: "12:00",
+          endTime: "18:00"
+        }
+      ]
+    });
+
+    const blockedState = rosterReducer(state, {
+      type: "shift/move",
+      payload: {
+        shiftId: "shift-1",
+        targetEmployeeId: "emp-2",
+        targetDay: 2
+      }
+    });
+
+    expect(blockedState.shifts).toEqual(state.shifts);
+    expect(blockedState.lastErrors).toEqual({
+      conflict: "Employee already has an overlapping shift."
+    });
+  });
+
+  test("rejects moving a shift that would exceed 5 consecutive days", () => {
+    const state = createRosterState({
+      employees: [
+        {
+          id: "emp-1",
+          name: "Alex",
+          roles: ["Cashier"]
+        },
+        {
+          id: "emp-2",
+          name: "Blair",
+          roles: ["Cashier"]
+        }
+      ],
+      shifts: [
+        {
+          id: "shift-move",
+          employeeId: "emp-1",
+          role: "Cashier",
+          day: 6,
+          startTime: "09:00",
+          endTime: "17:00"
+        },
+        ...[0, 1, 2, 3, 4].map((day) => ({
+          id: `shift-b-${day}`,
+          employeeId: "emp-2",
+          role: "Cashier",
+          day,
+          startTime: "09:00",
+          endTime: "17:00"
+        }))
+      ]
+    });
+
+    const blockedState = rosterReducer(state, {
+      type: "shift/move",
+      payload: {
+        shiftId: "shift-move",
+        targetEmployeeId: "emp-2",
+        targetDay: 5
+      }
+    });
+
+    expect(blockedState.shifts).toEqual(state.shifts);
+    expect(blockedState.lastErrors).toEqual({
+      conflict: "Employee cannot be scheduled for more than 5 consecutive days."
+    });
+  });
+
+  test("rejects moving a shift to a nonexistent employee", () => {
+    const state = baseState();
+
+    const blockedState = rosterReducer(state, {
+      type: "shift/move",
+      payload: {
+        shiftId: "shift-1",
+        targetEmployeeId: "missing",
+        targetDay: 1
+      }
+    });
+
+    expect(blockedState.shifts).toEqual(state.shifts);
+    expect(blockedState.lastErrors).toEqual({
+      employeeId: "Target employee does not exist."
+    });
+  });
+
   test("resets to sample data", () => {
     const changedState = rosterReducer(baseState(), {
       type: "employee/add",

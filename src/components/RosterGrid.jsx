@@ -16,10 +16,13 @@ export default function RosterGrid({
   lastErrors = {},
   onAddShift,
   onEditShift,
-  onRemoveShift
+  onRemoveShift,
+  onMoveShift
 }) {
   const [editorContext, setEditorContext] = useState(null);
   const [editorErrors, setEditorErrors] = useState({});
+  const [dragState, setDragState] = useState(null);
+  const [dropTarget, setDropTarget] = useState(null);
   const shiftsByEmployeeDay = useMemo(() => groupShifts(shifts), [shifts]);
   const conflictCountsByShift = useMemo(
     () => countConflictsByShift(conflicts),
@@ -89,6 +92,43 @@ export default function RosterGrid({
     closeEditor();
   }
 
+  function handleDragStart(event, shift) {
+    event.dataTransfer.effectAllowed = "move";
+    event.dataTransfer.setData("text/plain", shift.id);
+    setDragState({ shiftId: shift.id, employeeId: shift.employeeId, day: shift.day });
+  }
+
+  function handleDragEnd() {
+    setDragState(null);
+    setDropTarget(null);
+  }
+
+  function handleDragOver(event) {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "move";
+  }
+
+  function handleDragEnter(event, employeeId, dayIndex) {
+    event.preventDefault();
+    setDropTarget({ employeeId, day: dayIndex });
+  }
+
+  function handleDragLeave(event, employeeId, dayIndex) {
+    if (dropTarget?.employeeId === employeeId && dropTarget?.day === dayIndex) {
+      setDropTarget(null);
+    }
+  }
+
+  function handleDrop(event, targetEmployeeId, targetDay) {
+    event.preventDefault();
+    setDropTarget(null);
+
+    const shiftId = event.dataTransfer.getData("text/plain");
+    if (!shiftId || !onMoveShift) return;
+
+    onMoveShift(shiftId, targetEmployeeId, targetDay);
+  }
+
   return (
     <section className="panel roster-grid-panel" aria-labelledby="grid-title">
       <div className="panel-heading">
@@ -120,9 +160,28 @@ export default function RosterGrid({
             {DAYS.map((day, dayIndex) => {
               const cellShifts =
                 shiftsByEmployeeDay.get(cellKey(employee.id, dayIndex)) ?? [];
+              const isDropTarget =
+                dropTarget?.employeeId === employee.id &&
+                dropTarget?.day === dayIndex;
+              const isDropSource =
+                dragState?.employeeId === employee.id &&
+                dragState?.day === dayIndex;
 
               return (
-                <div className="shift-cell" role="cell" key={day}>
+                <div
+                  className={[
+                    "shift-cell",
+                    isDropTarget && !isDropSource ? "is-drop-target" : ""
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                  role="cell"
+                  key={day}
+                  onDragOver={handleDragOver}
+                  onDragEnter={(event) => handleDragEnter(event, employee.id, dayIndex)}
+                  onDragLeave={(event) => handleDragLeave(event, employee.id, dayIndex)}
+                  onDrop={(event) => handleDrop(event, employee.id, dayIndex)}
+                >
                   <button
                     className="add-shift-button"
                     type="button"
@@ -142,16 +201,20 @@ export default function RosterGrid({
                         <button
                           className={[
                             "shift-card",
-                            conflictCount > 0 ? "is-conflicting" : ""
+                            conflictCount > 0 ? "is-conflicting" : "",
+                            dragState?.shiftId === shift.id ? "is-dragging" : ""
                           ]
                             .filter(Boolean)
                             .join(" ")}
                           type="button"
                           key={shift.id}
+                          draggable="true"
                           aria-label={`Edit ${shift.role} shift for ${employee.name} on ${day}`}
                           onClick={() =>
                             openEditEditor(employee.id, dayIndex, shift)
                           }
+                          onDragStart={(event) => handleDragStart(event, shift)}
+                          onDragEnd={handleDragEnd}
                         >
                           <span className="shift-role">{shift.role}</span>
                           <span>

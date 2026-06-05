@@ -562,6 +562,21 @@ h3 {
   box-shadow: inset 3px 0 0 #c75c27;
 }
 
+.shift-card[draggable="true"] {
+  cursor: grab;
+}
+
+.shift-card.is-dragging {
+  opacity: 0.4;
+  cursor: grabbing;
+}
+
+.shift-cell.is-drop-target {
+  background: #e0f0fb;
+  outline: 2px dashed #2f6f9f;
+  outline-offset: -2px;
+}
+
 .shift-role {
   width: fit-content;
   padding: 2px 7px;

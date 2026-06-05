@@ -77,6 +77,11 @@ export function useRoster(initialState = initialRosterState) {
         }),
       editShift: (payload) => dispatch({ type: "shift/edit", payload }),
       removeShift: (id) => dispatch({ type: "shift/remove", payload: { id } }),
+      moveShift: (shiftId, targetEmployeeId, targetDay) =>
+        dispatch({
+          type: "shift/move",
+          payload: { shiftId, targetEmployeeId, targetDay }
+        }),
       resetRoster: () => dispatch({ type: "roster/reset" })
     }),
     []
@@ -196,6 +201,53 @@ export function rosterReducer(state, action) {
         employees: state.employees,
         shifts: state.shifts.filter((shift) => shift.id !== action.payload.id)
       });
+
+    case "shift/move": {
+      const { shiftId, targetEmployeeId, targetDay } = action.payload;
+      const existingShift = state.shifts.find((shift) => shift.id === shiftId);
+
+      if (!existingShift) {
+        return withErrors(state, { shiftId: "Shift does not exist." });
+      }
+
+      const targetEmployee = state.employees.find(
+        (employee) => employee.id === targetEmployeeId
+      );
+
+      if (!targetEmployee) {
+        return withErrors(state, {
+          employeeId: "Target employee does not exist."
+        });
+      }
+
+      if (!targetEmployee.roles.includes(existingShift.role)) {
+        return withErrors(state, {
+          role: "Target employee does not have this shift's role."
+        });
+      }
+
+      const nextShift = {
+        ...existingShift,
+        employeeId: targetEmployeeId,
+        day: targetDay
+      };
+      const nextShifts = state.shifts.map((shift) =>
+        shift.id === shiftId ? nextShift : shift
+      );
+      const conflictValidation = validateNoProposedShiftConflict(
+        nextShifts,
+        shiftId
+      );
+
+      if (!conflictValidation.isValid) {
+        return withErrors(state, conflictValidation.errors);
+      }
+
+      return createRosterState({
+        employees: state.employees,
+        shifts: nextShifts
+      });
+    }
 
     case "roster/reset":
       return initialRosterState;

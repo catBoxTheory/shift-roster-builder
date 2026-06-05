@@ -7,11 +7,12 @@
 - Conflict summary commit: `c621a86 feat: add conflict summary panel`
 - Conflict summary correction commit: `9dcea6b fix: simplify conflict summary flags`
 - Conflict blocking correction commit: `d5978b0 fix: block conflicting shift changes`
+- Scoped error and summary cleanup commit: `b9bd2f5 fix: scope shift errors to editor`
 - GitHub: [catBoxTheory/shift-roster-builder](https://github.com/catBoxTheory/shift-roster-builder)
 
 ## Goal
 
-Make roster correctness visible to the reviewer. The app highlights invalid derived conflict states, replaces the placeholder summary with totals and readable conflict explanations, and now blocks users from creating conflicting shifts through add/edit actions.
+Make roster correctness visible without adding noise to normal scheduling. The app blocks users from creating conflicting shifts through add/edit actions, keeps conflict errors inside the shift editor, and keeps the summary focused on totals, weekly hours, and CSV export.
 
 ## Scope
 
@@ -20,13 +21,14 @@ In scope:
 - Add `ConflictBadge`.
 - Highlight conflicting shift cards in `RosterGrid`.
 - Build `SummaryPanel`.
-- Show employee count, shift count, total hours, and readable conflict details.
+- Show employee count, shift count, and total hours.
 - Show weekly hours per employee sorted high-to-low.
-- Show conflict explanations for same-day overlaps and more-than-5-consecutive-day conflicts.
+- Keep invalid derived conflict states visually marked in the grid if they ever appear.
 - Wire conflict and summary state through `App`.
 - Add component tests before implementation.
 - Verify the rendered conflict flow in Browser on desktop and mobile-width viewports.
 - Add post-review reducer validation so conflicting shift add/edit attempts are rejected before they enter the roster.
+- Remove the summary conflict-details section after review.
 
 Out of scope:
 
@@ -37,11 +39,11 @@ Out of scope:
 
 ## Thought Process
 
-The reducer already computed `conflicts`, `conflictingShiftIds`, and `weeklyHoursByEmployee`, so this phase focused on presenting that derived state clearly. I kept the conflict UI close to the manager's workflow: the grid shows which shift cards need attention, while the summary panel explains why.
+The reducer already computed `conflicts`, `conflictingShiftIds`, and `weeklyHoursByEmployee`, so this phase originally focused on presenting that derived state clearly. Later review showed that the better user experience is to prevent conflicts during shift entry instead of asking the manager to clean them up afterward.
 
-The summary panel is intentionally compact. It gives the reviewer quick counts first, then weekly hours sorted by workload, then conflict details. This supports the assessment's correctness requirement without adding a separate reporting view or extra navigation.
+The summary panel is intentionally compact. It gives the reviewer quick counts first, then weekly hours sorted by workload. Conflict details were removed after review because normal UI actions now block conflicts before they enter the roster.
 
-After user and external-model testing, the visible conflict counts were removed because they added noise without improving the scheduling decision. The conflict details now flag each employee once per conflict type: one overlap flag if the employee has at least one overlapping shift, one consecutive-days flag if they exceed the 5-day limit, and two flags only when both conflict types apply.
+After user and external-model testing, visible conflict counts were removed because they added noise without improving the scheduling decision.
 
 After a later review, the interaction model changed again: the manager should not be allowed to save a shift that would create an overlap or schedule an employee for more than 5 consecutive days. The conflict display remains useful for derived or preloaded invalid states, but normal UI entry now prevents those states.
 
@@ -54,9 +56,10 @@ After a later review, the interaction model changed again: the manager should no
 - The right panel width was increased slightly because the summary now contains real information, not only three counts.
 - Browser QA created a real overlapping shift through the UI instead of relying only on static sample data.
 - Conflict counts are not shown in the summary header, summary facts, employee rows, or conflict badges.
-- Conflict details are grouped by employee and conflict type, not by every conflicting shift pair.
 - Shift add/edit actions now validate the proposed roster before committing it.
 - Overlap and consecutive-day conflicts return clear inline errors and leave the previous roster unchanged.
+- Shift conflict errors stay inside the shift editor and do not appear in the employee form.
+- Summary conflict details and the `No conflicts` empty state are not rendered.
 
 ## AI Tools And Assistants Used
 
@@ -93,7 +96,9 @@ Results:
 - Dependency audit passed with 0 vulnerabilities.
 - Post-review conflict-blocking tests failed first because the reducer still accepted overlapping and 6-consecutive-day shift changes.
 - Final conflict-blocking focused test run passed: 1 file, 11 tests.
-- Final full test run passed: 8 files, 46 tests.
+- Scoped-error and summary-cleanup tests failed first because shift conflict errors leaked into `EmployeePanel` and `SummaryPanel` still rendered conflict details.
+- Final focused component tests passed: EmployeePanel 6 tests, RosterGrid 8 tests, SummaryPanel 5 tests.
+- Final full test run passed: 8 files, 47 tests.
 - Final production build passed.
 
 Browser checks:
@@ -105,20 +110,20 @@ Browser checks:
 - Mobile-width result at `390px`: body width did not overflow, the roster grid remained horizontally scrollable inside the panel, and the conflict cards/details remained present.
 - Console warnings/errors: none.
 - Correction proof at `http://127.0.0.1:4175/`: after creating the same overlap, the summary showed no conflict count pill, no `Conflicts` fact row, no conflict count in employee rows, and one detail item: `Alex Chen has overlapping shifts.`
-- Conflict-blocking proof at `http://127.0.0.1:4177/`: attempted to add a second Monday shift for Alex Chen from `12:00-18:00`; the app showed `Employee already has an overlapping shift.`, kept the roster at 3 shifts, kept `No conflicts`, and logged no console errors.
+- Conflict-blocking proof at `http://127.0.0.1:4177/`: attempted to add a second Monday shift for Alex Chen from `12:00-18:00`; the app showed `Employee already has an overlapping shift.`, kept the roster at 3 shifts, and logged no console errors.
+- Scoped-error proof at `http://127.0.0.1:4178/`: attempted the same overlap; the shift editor stayed open with the error, the employee panel did not show the error, the summary showed no `Conflict details` or `No conflicts`, the roster stayed at 3 shifts, and console errors were empty.
 
 Covered scenarios:
 
 - Grid marks conflicting shift cards with a visible badge.
 - Summary shows roster totals.
-- Summary explains overlap conflicts once per employee.
-- Summary explains more-than-5-consecutive-day conflicts once per employee.
-- Summary shows two detail rows when one employee has both conflict types.
 - Summary sorts employee rows by weekly hours descending.
-- Summary shows a clean empty state when there are no conflicts.
+- Summary does not render conflict details or a no-conflicts empty state.
 - Reducer rejects adding an overlapping shift.
 - Reducer rejects editing a shift into an overlap.
 - Reducer rejects adding a shift that would exceed 5 consecutive days.
+- RosterGrid rejects overlapping shift attempts before dispatch and keeps the editor open.
+- EmployeePanel ignores shift-specific conflict errors.
 
 ## Known Limitations And Follow-Up
 
@@ -129,4 +134,4 @@ Covered scenarios:
 
 ## Reviewer Notes
 
-Phase 6 completes the required correctness path: normal UI actions prevent invalid schedules, and the conflict UI still explains invalid derived states if they ever appear.
+Phase 6 completes the required correctness path: normal UI actions prevent invalid schedules, shift errors appear where the user is editing, and the summary stays focused on review metrics.

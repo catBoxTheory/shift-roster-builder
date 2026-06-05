@@ -5,6 +5,15 @@ import RosterGrid from "./RosterGrid.jsx";
 
 globalThis.IS_REACT_ACT_ENVIRONMENT = true;
 
+class DragEvent extends Event {
+  constructor(type, options = {}) {
+    super(type, options);
+    this.dataTransfer = options.dataTransfer ?? null;
+  }
+}
+
+globalThis.DragEvent = DragEvent;
+
 const employees = [
   {
     id: "emp-1",
@@ -198,6 +207,51 @@ describe("RosterGrid", () => {
     );
     expect(container.textContent).toContain("Add shift");
   });
+
+  test("shift cards are draggable", () => {
+    const { container } = renderGrid();
+
+    const card = getButton(container, "Edit Cashier shift for Alex Chen on Mon");
+    expect(card.getAttribute("draggable")).toBe("true");
+  });
+
+  test("drop on a valid cell calls onMoveShift", () => {
+    const onMoveShift = vi.fn();
+    const { container } = renderGrid({ onMoveShift });
+    const card = getButton(container, "Edit Cashier shift for Alex Chen on Mon");
+
+    const dataTransfer = createDataTransfer("shift-1");
+    dispatchDragStart(card, dataTransfer);
+
+    const targetCell = getShiftCell(container, "emp-2", 1);
+    dispatchDrop(targetCell, dataTransfer);
+
+    expect(onMoveShift).toHaveBeenCalledWith("shift-1", "emp-2", 1);
+  });
+
+  test("drop on the same cell does not call onMoveShift", () => {
+    const onMoveShift = vi.fn();
+    const { container } = renderGrid({ onMoveShift });
+    const card = getButton(container, "Edit Cashier shift for Alex Chen on Mon");
+
+    const dataTransfer = createDataTransfer("shift-1");
+    dispatchDragStart(card, dataTransfer);
+
+    const sourceCell = getShiftCell(container, "emp-1", 0);
+    dispatchDrop(sourceCell, dataTransfer);
+
+    expect(onMoveShift).toHaveBeenCalledWith("shift-1", "emp-1", 0);
+  });
+
+  test("dragged card gets is-dragging class", () => {
+    const { container } = renderGrid();
+    const card = getButton(container, "Edit Cashier shift for Alex Chen on Mon");
+
+    const dataTransfer = createDataTransfer("shift-1");
+    dispatchDragStart(card, dataTransfer);
+
+    expect(card.className).toContain("is-dragging");
+  });
 });
 
 function renderGrid(props = {}) {
@@ -299,4 +353,47 @@ function click(element) {
   act(() => {
     element.dispatchEvent(new MouseEvent("click", { bubbles: true }));
   });
+}
+
+function createDataTransfer(data) {
+  const store = new Map();
+  return {
+    effectAllowed: "",
+    dropEffect: "",
+    setData: (type, value) => store.set(type, value),
+    getData: (type) => store.get(type) ?? ""
+  };
+}
+
+function dispatchDragStart(element, dataTransfer) {
+  act(() => {
+    element.dispatchEvent(
+      new DragEvent("dragstart", { bubbles: true, dataTransfer })
+    );
+  });
+}
+
+function dispatchDrop(element, dataTransfer) {
+  act(() => {
+    element.dispatchEvent(
+      new DragEvent("drop", { bubbles: true, dataTransfer })
+    );
+  });
+}
+
+function getShiftCell(container, employeeId, dayIndex) {
+  const employee = employees.find((e) => e.id === employeeId);
+  const rows = container.querySelectorAll('[role="row"]');
+
+  for (const row of rows) {
+    const header = row.querySelector('[role="rowheader"]');
+    if (!header) continue;
+    if (!header.textContent.includes(employee.name)) continue;
+
+    const cells = row.querySelectorAll('[role="cell"]');
+    const cell = cells[dayIndex];
+    if (cell) return cell;
+  }
+
+  throw new Error(`Shift cell not found: ${employeeId} day ${dayIndex}`);
 }

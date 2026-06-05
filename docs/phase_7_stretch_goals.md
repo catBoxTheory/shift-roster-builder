@@ -36,7 +36,7 @@ The required app was already stable after Phase 6 and the post-review correction
 
 The export logic lives in a utility instead of inside the component. That keeps the data transformation testable and leaves the React code responsible only for wiring the current roster state to a file download action.
 
-The CSV includes conflict notes per shift. This gives exported data the same correctness context shown in the UI without reintroducing visible conflict counts into the app.
+The CSV still supports conflict notes per shift if invalid derived data is ever present. In the normal UI flow, conflicting shifts are now blocked before export.
 
 ## Design Decisions
 
