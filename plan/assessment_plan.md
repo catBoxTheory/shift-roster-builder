@@ -17,7 +17,7 @@ The most important strategy is to ship a clean, working core with clear reasonin
 
 - Phase 1 project setup is complete.
 - Phase 6 feature commit: `c621a86 feat: add conflict summary panel`
-- Phase 6 correction commit: pending
+- Phase 6 correction commit: `9dcea6b fix: simplify conflict summary flags`
 - GitHub repository: [catBoxTheory/shift-roster-builder](https://github.com/catBoxTheory/shift-roster-builder)
 - Remote branch: `main` tracking `origin/main`
 - Verified checks: `npm run build`, `npm test`, `npm audit`, and Vite/Browser smoke testing
@@ -27,7 +27,7 @@ The most important strategy is to ship a clean, working core with clear reasonin
 - Stage-by-stage documentation is maintained under `docs/`.
 - Next phase: Phase 7, Stretch Goals, or Phase 8 submission polish if time is tight
 
-Phase 6 is complete locally and documented. A post-review conflict-summary correction is ready to commit.
+Phase 6 is complete locally and documented, including the post-review conflict-summary correction.
 
 ---
 

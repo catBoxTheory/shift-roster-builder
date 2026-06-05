@@ -5,7 +5,7 @@
 - Status: Complete
 - Date: 2026-06-05
 - Conflict summary commit: `c621a86 feat: add conflict summary panel`
-- Conflict summary correction commit: Pending
+- Conflict summary correction commit: `9dcea6b fix: simplify conflict summary flags`
 - GitHub: [catBoxTheory/shift-roster-builder](https://github.com/catBoxTheory/shift-roster-builder)
 
 ## Goal
