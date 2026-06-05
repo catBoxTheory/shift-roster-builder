@@ -51,6 +51,47 @@ describe("RosterGrid", () => {
     expect(container.textContent).toContain("09:00-17:00");
   });
 
+  test("marks conflicting shift cards with a visible badge", () => {
+    const conflictShifts = [
+      ...shifts,
+      {
+        id: "shift-2",
+        employeeId: "emp-1",
+        role: "Supervisor",
+        day: 0,
+        startTime: "12:00",
+        endTime: "18:00"
+      }
+    ];
+
+    const { container } = renderGrid({
+      shifts: conflictShifts,
+      conflictingShiftIds: new Set(["shift-1", "shift-2"]),
+      conflicts: [
+        {
+          type: "overlap",
+          employeeId: "emp-1",
+          day: 0,
+          shiftIds: ["shift-1", "shift-2"],
+          message: "Employee has overlapping shifts on the same day."
+        }
+      ]
+    });
+
+    const cashierShift = getButton(
+      container,
+      "Edit Cashier shift for Alex Chen on Mon"
+    );
+    const supervisorShift = getButton(
+      container,
+      "Edit Supervisor shift for Alex Chen on Mon"
+    );
+
+    expect(cashierShift.className).toContain("is-conflicting");
+    expect(supervisorShift.className).toContain("is-conflicting");
+    expect(container.textContent).toContain("Conflict");
+  });
+
   test("creates a shift from an empty employee/day cell", () => {
     const onAddShift = vi.fn();
     const { container } = renderGrid({ onAddShift });

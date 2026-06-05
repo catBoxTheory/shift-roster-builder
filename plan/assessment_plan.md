@@ -16,16 +16,17 @@ The most important strategy is to ship a clean, working core with clear reasonin
 ## Current Status
 
 - Phase 1 project setup is complete.
-- Phase 5 feature commit: `343018c feat: add roster grid shift editor`
+- Phase 6 feature commit: pending
 - GitHub repository: [catBoxTheory/shift-roster-builder](https://github.com/catBoxTheory/shift-roster-builder)
 - Remote branch: `main` tracking `origin/main`
 - Verified checks: `npm run build`, `npm test`, `npm audit`, and Vite/Browser smoke testing
 - Phase 4 employee panel UI is complete.
 - Phase 5 weekly roster grid and shift editor UI is complete.
+- Phase 6 conflict UI and summary panel are complete.
 - Stage-by-stage documentation is maintained under `docs/`.
-- Next phase: Phase 6, Conflict UI and Summary Panel
+- Next phase: Phase 7, Stretch Goals, or Phase 8 submission polish if time is tight
 
-Phase 5 is complete locally and documented.
+Phase 6 is complete locally and ready to commit.
 
 ---
 
@@ -74,6 +75,7 @@ Shift Roster Builder/
 │   │   ├── RosterGrid.test.jsx
 │   │   ├── ShiftEditor.jsx         # Create/edit shift form or modal
 │   │   ├── SummaryPanel.jsx        # Weekly totals, conflicts, export action
+│   │   ├── SummaryPanel.test.jsx
 │   │   └── ConflictBadge.jsx       # Visual conflict indicator
 │   ├── hooks/
 │   │   ├── useRoster.js            # Roster reducer/actions and derived state
@@ -292,11 +294,11 @@ Completed steps:
 
 Phase 5 used test-first development. The first focused component test run failed because `RosterGrid.jsx` was missing; the final focused test run passed with 6 tests, and the full suite passed with 32 tests. Browser validation found and drove a form-submit hardening so visible time values are submitted reliably.
 
-### Phase 6: Conflict UI and Summary Panel
+### Phase 6: Conflict UI and Summary Panel - Complete
 
 Goal: make correctness visible to the reviewer.
 
-Steps:
+Completed steps:
 
 1. Highlight overlapping shifts and consecutive-day conflicts.
 2. Add `ConflictBadge` with a readable explanation.
@@ -304,6 +306,8 @@ Steps:
 4. Show conflict counts in the summary panel.
 5. Sort summary rows by total hours descending, with conflicts easy to spot.
 6. Create `docs/phase_6_conflicts_summary.md` using `docs/phase_template.md`.
+
+Phase 6 used test-first development. The first SummaryPanel focused test failed because `SummaryPanel.jsx` was missing; the first RosterGrid conflict test failed because cards were not yet marked as conflicting. The final focused tests passed, the full suite passed with 36 tests, and Browser validation confirmed the overlap flow on desktop plus mobile-width layout behavior.
 
 ### Phase 7: Stretch Goals
 
@@ -366,7 +370,7 @@ Submission steps:
 | Phase 3: State/validation | Complete | 2:30 |
 | Phase 4: Employee panel | Complete | 3:30 |
 | Phase 5: Roster grid/editor | Complete | 5:30 |
-| Phase 6: Conflicts/summary | 1 hr | 6:30 |
+| Phase 6: Conflicts/summary | Complete | 6:30 |
 | Phase 7: Stretch goals | 1 hr | 7:30 |
 | Phase 8: README/submission polish | 1 hr | 8:30 |
 

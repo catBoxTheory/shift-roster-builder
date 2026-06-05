@@ -112,7 +112,7 @@ h3 {
 
 .workspace-grid {
   display: grid;
-  grid-template-columns: 320px minmax(360px, 1fr) 240px;
+  grid-template-columns: 320px minmax(420px, 1fr) 280px;
   gap: 14px;
   align-items: start;
 }
@@ -143,6 +143,11 @@ h3 {
   font-size: 0.86rem;
   font-weight: 800;
   text-align: center;
+}
+
+.count-pill.warning {
+  color: #8a3f00;
+  background: #fff1d6;
 }
 
 .employee-form {
@@ -354,6 +359,79 @@ h3 {
   font-weight: 900;
 }
 
+.summary-panel {
+  overflow: hidden;
+}
+
+.summary-section {
+  display: grid;
+  gap: 10px;
+  padding: 16px 18px;
+  border-top: 1px solid #e7ecf2;
+}
+
+.summary-section h3 {
+  margin-bottom: 0;
+}
+
+.summary-employee-list {
+  display: grid;
+  gap: 8px;
+}
+
+.summary-employee-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px;
+  border: 1px solid #dde6ef;
+  border-radius: 7px;
+  background: #fbfcfe;
+}
+
+.summary-employee-row div {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.summary-employee-row span {
+  color: #66758a;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.summary-employee-row strong:last-child {
+  flex: 0 0 auto;
+}
+
+.conflict-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.conflict-list li {
+  padding: 10px;
+  border: 1px solid #f0c8a4;
+  border-radius: 7px;
+  color: #713600;
+  background: #fff8ec;
+  font-size: 0.84rem;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+.empty-note {
+  margin-bottom: 0;
+  color: #4f6f56;
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
 .roster-grid-panel {
   position: relative;
   overflow: hidden;
@@ -473,6 +551,12 @@ h3 {
   background: #e0f0fb;
 }
 
+.shift-card.is-conflicting {
+  border-color: #dd8f52;
+  background: #fff5e8;
+  box-shadow: inset 3px 0 0 #c75c27;
+}
+
 .shift-role {
   width: fit-content;
   padding: 2px 7px;
@@ -481,6 +565,31 @@ h3 {
   background: #285174;
   font-size: 0.74rem;
   font-weight: 900;
+}
+
+.conflict-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  width: fit-content;
+  padding: 2px 7px;
+  border-radius: 999px;
+  color: #8a260f;
+  background: #ffe0d5;
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.conflict-badge span {
+  display: grid;
+  width: 14px;
+  height: 14px;
+  place-items: center;
+  border-radius: 999px;
+  color: #ffffff;
+  background: #c2411f;
+  font-size: 0.68rem;
+  line-height: 1;
 }
 
 .editor-overlay {

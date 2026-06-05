@@ -1,12 +1,17 @@
 import { useMemo, useState } from "react";
 import { validateShiftInput } from "../hooks/useRoster.js";
+import ConflictBadge from "./ConflictBadge.jsx";
 import ShiftEditor from "./ShiftEditor.jsx";
 
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const EMPTY_CONFLICTS = [];
+const EMPTY_CONFLICTING_SHIFT_IDS = new Set();
 
 export default function RosterGrid({
   employees,
   shifts,
+  conflicts = EMPTY_CONFLICTS,
+  conflictingShiftIds = EMPTY_CONFLICTING_SHIFT_IDS,
   lastErrors = {},
   onAddShift,
   onEditShift,
@@ -15,6 +20,10 @@ export default function RosterGrid({
   const [editorContext, setEditorContext] = useState(null);
   const [editorErrors, setEditorErrors] = useState({});
   const shiftsByEmployeeDay = useMemo(() => groupShifts(shifts), [shifts]);
+  const conflictCountsByShift = useMemo(
+    () => countConflictsByShift(conflicts),
+    [conflicts]
+  );
   const editorEmployee = editorContext
     ? employees.find((employee) => employee.id === editorContext.employeeId)
     : null;
@@ -107,20 +116,36 @@ export default function RosterGrid({
                   </button>
 
                   <div className="shift-card-list">
-                    {cellShifts.map((shift) => (
-                      <button
-                        className="shift-card"
-                        type="button"
-                        key={shift.id}
-                        aria-label={`Edit ${shift.role} shift for ${employee.name} on ${day}`}
-                        onClick={() => openEditEditor(employee.id, dayIndex, shift)}
-                      >
-                        <span className="shift-role">{shift.role}</span>
-                        <span>
-                          {shift.startTime}-{shift.endTime}
-                        </span>
-                      </button>
-                    ))}
+                    {cellShifts.map((shift) => {
+                      const conflictCount =
+                        conflictCountsByShift.get(shift.id) ??
+                        (conflictingShiftIds.has(shift.id) ? 1 : 0);
+
+                      return (
+                        <button
+                          className={[
+                            "shift-card",
+                            conflictCount > 0 ? "is-conflicting" : ""
+                          ]
+                            .filter(Boolean)
+                            .join(" ")}
+                          type="button"
+                          key={shift.id}
+                          aria-label={`Edit ${shift.role} shift for ${employee.name} on ${day}`}
+                          onClick={() =>
+                            openEditEditor(employee.id, dayIndex, shift)
+                          }
+                        >
+                          <span className="shift-role">{shift.role}</span>
+                          <span>
+                            {shift.startTime}-{shift.endTime}
+                          </span>
+                          {conflictCount > 0 ? (
+                            <ConflictBadge count={conflictCount} />
+                          ) : null}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               );
@@ -164,4 +189,16 @@ function groupShifts(shifts) {
 
 function cellKey(employeeId, day) {
   return `${employeeId}:${day}`;
+}
+
+function countConflictsByShift(conflicts) {
+  const counts = new Map();
+
+  for (const conflict of conflicts) {
+    for (const shiftId of conflict.shiftIds) {
+      counts.set(shiftId, (counts.get(shiftId) ?? 0) + 1);
+    }
+  }
+
+  return counts;
 }
