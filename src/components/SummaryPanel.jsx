@@ -2,7 +2,8 @@ export default function SummaryPanel({
   employees,
   shifts,
   conflicts,
-  weeklyHoursByEmployee
+  weeklyHoursByEmployee,
+  onExportCsv
 }) {
   const totalHours = Object.values(weeklyHoursByEmployee).reduce(
     (sum, hours) => sum + hours,
@@ -71,6 +72,18 @@ export default function SummaryPanel({
           <p className="empty-note">No conflicts</p>
         )}
       </section>
+
+      {onExportCsv ? (
+        <section className="summary-section export-section">
+          <button
+            className="primary-button small"
+            type="button"
+            onClick={onExportCsv}
+          >
+            Export CSV
+          </button>
+        </section>
+      ) : null}
     </aside>
   );
 }

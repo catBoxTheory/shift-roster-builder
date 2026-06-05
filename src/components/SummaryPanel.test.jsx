@@ -1,6 +1,6 @@
 import { act } from "react";
 import { createRoot } from "react-dom/client";
-import { afterEach, describe, expect, test } from "vitest";
+import { afterEach, describe, expect, test, vi } from "vitest";
 import SummaryPanel from "./SummaryPanel.jsx";
 
 globalThis.IS_REACT_ACT_ENVIRONMENT = true;
@@ -165,6 +165,15 @@ describe("SummaryPanel", () => {
 
     expect(container.textContent).toContain("No conflicts");
   });
+
+  test("calls the export action from the summary panel", () => {
+    const onExportCsv = vi.fn();
+    const { container } = renderSummary({ onExportCsv });
+
+    click(getButton(container, "Export CSV"));
+
+    expect(onExportCsv).toHaveBeenCalledTimes(1);
+  });
 });
 
 function renderSummary(props = {}) {
@@ -179,6 +188,7 @@ function renderSummary(props = {}) {
         shifts={shifts}
         conflicts={[]}
         weeklyHoursByEmployee={{}}
+        onExportCsv={undefined}
         {...props}
       />
     );
@@ -186,4 +196,22 @@ function renderSummary(props = {}) {
 
   roots.push({ root, container });
   return { container };
+}
+
+function getButton(container, label) {
+  const button = [...container.querySelectorAll("button")].find(
+    (item) => item.textContent.trim() === label
+  );
+
+  if (!button) {
+    throw new Error(`Button not found: ${label}`);
+  }
+
+  return button;
+}
+
+function click(element) {
+  act(() => {
+    element.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+  });
 }
