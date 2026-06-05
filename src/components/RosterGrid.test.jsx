@@ -181,6 +181,23 @@ describe("RosterGrid", () => {
     expect(container.textContent).toContain("End time must be after start time.");
     expect(container.textContent).toContain("Add shift");
   });
+
+  test("keeps the editor open and shows validation for overlapping shifts", () => {
+    const onAddShift = vi.fn();
+    const { container } = renderGrid({ onAddShift });
+
+    click(getButton(container, "Add shift for Alex Chen on Mon"));
+    selectValue(getSelect(container, "Shift role"), "Supervisor");
+    setInputValue(getInput(container, "Start time"), "12:00");
+    setInputValue(getInput(container, "End time"), "18:00");
+    click(getButton(container, "Add shift"));
+
+    expect(onAddShift).not.toHaveBeenCalled();
+    expect(container.textContent).toContain(
+      "Employee already has an overlapping shift."
+    );
+    expect(container.textContent).toContain("Add shift");
+  });
 });
 
 function renderGrid(props = {}) {

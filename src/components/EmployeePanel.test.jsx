@@ -94,6 +94,18 @@ describe("EmployeePanel", () => {
     expect(container.textContent).toContain("Employee name must be unique.");
     expect(container.textContent).toContain("Select at least one role.");
   });
+
+  test("does not show shift conflict errors in the employee form", () => {
+    const { container } = renderPanel({
+      lastErrors: {
+        conflict: "Employee already has an overlapping shift."
+      }
+    });
+
+    expect(container.textContent).not.toContain(
+      "Employee already has an overlapping shift."
+    );
+  });
 });
 
 function renderPanel(props = {}) {

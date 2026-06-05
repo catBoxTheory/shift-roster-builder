@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { validateShiftInput } from "../hooks/useRoster.js";
+import { detectRosterConflicts } from "../utils/conflicts.js";
 import ConflictBadge from "./ConflictBadge.jsx";
 import ShiftEditor from "./ShiftEditor.jsx";
 
@@ -56,6 +57,22 @@ export default function RosterGrid({
 
     if (!validation.isValid) {
       setEditorErrors(validation.errors);
+      return;
+    }
+
+    const nextShift = {
+      id: editorContext?.shift?.id ?? "__pending-shift__",
+      ...validation.value
+    };
+    const nextShifts = editorContext?.shift
+      ? shifts.map((shift) => (shift.id === nextShift.id ? nextShift : shift))
+      : [...shifts, nextShift];
+    const conflict = detectRosterConflicts(nextShifts).find((item) =>
+      item.shiftIds.includes(nextShift.id)
+    );
+
+    if (conflict) {
+      setEditorErrors({ conflict: shiftConflictMessage(conflict.type) });
       return;
     }
 
@@ -201,4 +218,16 @@ function countConflictsByShift(conflicts) {
   }
 
   return counts;
+}
+
+function shiftConflictMessage(type) {
+  if (type === "overlap") {
+    return "Employee already has an overlapping shift.";
+  }
+
+  if (type === "consecutive-days") {
+    return "Employee cannot be scheduled for more than 5 consecutive days.";
+  }
+
+  return "Shift conflicts with the existing roster.";
 }

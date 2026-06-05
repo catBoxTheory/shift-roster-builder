@@ -1,7 +1,6 @@
 export default function SummaryPanel({
   employees,
   shifts,
-  conflicts,
   weeklyHoursByEmployee,
   onExportCsv
 }) {
@@ -10,7 +9,6 @@ export default function SummaryPanel({
     0
   );
   const shiftCountsByEmployee = countShiftsByEmployee(shifts);
-  const conflictDetails = summarizeConflicts(conflicts, employees);
   const sortedEmployees = [...employees].sort((first, second) => {
     const hourDifference =
       (weeklyHoursByEmployee[second.id] ?? 0) -
@@ -60,19 +58,6 @@ export default function SummaryPanel({
         </div>
       </section>
 
-      <section className="summary-section" aria-labelledby="conflicts-title">
-        <h3 id="conflicts-title">Conflict details</h3>
-        {conflictDetails.length > 0 ? (
-          <ul className="conflict-list">
-            {conflictDetails.map((detail) => (
-              <li key={detail.key}>{detail.message}</li>
-            ))}
-          </ul>
-        ) : (
-          <p className="empty-note">No conflicts</p>
-        )}
-      </section>
-
       {onExportCsv ? (
         <section className="summary-section export-section">
           <button
@@ -105,48 +90,6 @@ function countShiftsByEmployee(shifts) {
   }
 
   return counts;
-}
-
-function summarizeConflicts(conflicts, employees) {
-  const summaries = [];
-  const seen = new Set();
-
-  for (const conflict of conflicts) {
-    const key = `${conflict.employeeId}:${conflict.type}`;
-
-    if (seen.has(key)) {
-      continue;
-    }
-
-    seen.add(key);
-
-    const employeeName =
-      employees.find((employee) => employee.id === conflict.employeeId)?.name ??
-      "Employee";
-
-    summaries.push({
-      key,
-      message: formatConflictSummary(
-        conflict.type,
-        employeeName,
-        conflict.message
-      )
-    });
-  }
-
-  return summaries;
-}
-
-function formatConflictSummary(type, employeeName, fallbackMessage) {
-  if (type === "overlap") {
-    return `${employeeName} has overlapping shifts.`;
-  }
-
-  if (type === "consecutive-days") {
-    return `${employeeName} is scheduled for more than 5 consecutive days.`;
-  }
-
-  return `${employeeName}: ${fallbackMessage}`;
 }
 
 function formatHours(hours) {

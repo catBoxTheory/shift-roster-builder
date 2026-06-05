@@ -58,7 +58,7 @@ afterEach(() => {
 });
 
 describe("SummaryPanel", () => {
-  test("shows roster totals and conflict explanations", () => {
+  test("shows roster totals without conflict details", () => {
     const { container } = renderSummary({
       conflicts,
       weeklyHoursByEmployee: {
@@ -75,9 +75,11 @@ describe("SummaryPanel", () => {
     expect(container.textContent).toContain("Total hours");
     expect(container.textContent).toContain("25.75h");
     expect(container.textContent).toContain("Alex Chen");
-    expect(container.textContent).toContain("has overlapping shifts");
     expect(container.textContent).toContain("Blair Wong");
-    expect(container.textContent).toContain("more than 5 consecutive days");
+    expect(container.textContent).not.toContain("Conflict details");
+    expect(container.textContent).not.toContain("No conflicts");
+    expect(container.textContent).not.toContain("has overlapping shifts");
+    expect(container.textContent).not.toContain("more than 5 consecutive days");
   });
 
   test("does not show conflict counts in the summary", () => {
@@ -102,43 +104,6 @@ describe("SummaryPanel", () => {
     expect(rows.every((row) => !row.includes("conflict"))).toBe(true);
   });
 
-  test("flags each employee once per conflict type in conflict details", () => {
-    const repeatedConflicts = [
-      {
-        type: "overlap",
-        employeeId: "emp-alex",
-        day: 0,
-        shiftIds: ["shift-alex-1", "shift-alex-2"],
-        message: "Employee has overlapping shifts on the same day."
-      },
-      {
-        type: "overlap",
-        employeeId: "emp-alex",
-        day: 1,
-        shiftIds: ["shift-alex-3", "shift-alex-4"],
-        message: "Employee has overlapping shifts on the same day."
-      },
-      {
-        type: "consecutive-days",
-        employeeId: "emp-alex",
-        days: [0, 1, 2, 3, 4, 5],
-        shiftIds: ["shift-alex-1"],
-        message: "Employee is scheduled for more than 5 consecutive days."
-      }
-    ];
-
-    const { container } = renderSummary({ conflicts: repeatedConflicts });
-    const details = [...container.querySelectorAll(".conflict-list li")].map(
-      (item) => item.textContent
-    );
-
-    expect(details).toHaveLength(2);
-    expect(details[0]).toContain("Alex Chen has overlapping shifts.");
-    expect(details[1]).toContain(
-      "Alex Chen is scheduled for more than 5 consecutive days."
-    );
-  });
-
   test("sorts employees by weekly hours descending", () => {
     const { container } = renderSummary({
       weeklyHoursByEmployee: {
@@ -160,10 +125,11 @@ describe("SummaryPanel", () => {
     expect(rows[2]).toContain("5.25h");
   });
 
-  test("shows an empty conflict state when the roster is clean", () => {
+  test("does not show an empty conflict state when the roster is clean", () => {
     const { container } = renderSummary();
 
-    expect(container.textContent).toContain("No conflicts");
+    expect(container.textContent).not.toContain("Conflict details");
+    expect(container.textContent).not.toContain("No conflicts");
   });
 
   test("calls the export action from the summary panel", () => {

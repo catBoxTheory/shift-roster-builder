@@ -88,7 +88,7 @@ export default function EmployeePanel({
           </div>
         </fieldset>
 
-        <ErrorList errors={lastErrors} />
+        <ErrorList errors={employeeFormErrors(lastErrors)} />
 
         <button className="primary-button" type="submit">
           Add employee
@@ -213,6 +213,13 @@ function ErrorList({ errors }) {
       ))}
     </div>
   );
+}
+
+function employeeFormErrors(errors) {
+  return {
+    ...(errors.name ? { name: errors.name } : {}),
+    ...(errors.roles ? { roles: errors.roles } : {})
+  };
 }
 
 function toggleValue(values, value) {
