@@ -127,6 +127,7 @@ export default function RosterGrid({
     if (!shiftId || !onMoveShift) return;
 
     onMoveShift(shiftId, targetEmployeeId, targetDay);
+    setDragState(null);
   }
 
   return (

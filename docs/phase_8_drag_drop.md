@@ -4,6 +4,7 @@
 
 - Status: Complete
 - Date: 2026-06-05
+- Bug fix commit: `fix: clear drag state on drop to prevent stuck transparency`
 - GitHub: [catBoxTheory/shift-roster-builder](https://github.com/catBoxTheory/shift-roster-builder)
 
 ## Goal
@@ -92,6 +93,7 @@ Covered scenarios:
 - The drop target highlight does not distinguish valid vs. invalid targets visually; the error appears after drop.
 - No animation or transition on the card move.
 - Final screenshot/demo capture still belongs in submission polish.
+- Bug fix: after user testing, a stuck transparency issue was found. When a shift card was dragged and dropped onto a new cell, the card stayed semi-transparent because `dragState` was not cleared before React re-rendered. The fix clears `dragState` immediately in `handleDrop` after calling `onMoveShift`, so the new card in the target cell does not match any drag state.
 
 ## Reviewer Notes
 
