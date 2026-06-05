@@ -144,15 +144,23 @@ export function rosterReducer(state, action) {
         return withErrors(state, validation.errors);
       }
 
+      const nextShift = {
+        id: action.payload.id,
+        ...validation.value
+      };
+      const nextShifts = [...state.shifts, nextShift];
+      const conflictValidation = validateNoProposedShiftConflict(
+        nextShifts,
+        nextShift.id
+      );
+
+      if (!conflictValidation.isValid) {
+        return withErrors(state, conflictValidation.errors);
+      }
+
       return createRosterState({
         employees: state.employees,
-        shifts: [
-          ...state.shifts,
-          {
-            id: action.payload.id,
-            ...validation.value
-          }
-        ]
+        shifts: nextShifts
       });
     }
 
@@ -163,13 +171,23 @@ export function rosterReducer(state, action) {
         return withErrors(state, validation.errors);
       }
 
+      const nextShifts = state.shifts.map((shift) =>
+        shift.id === action.payload.id
+          ? { ...shift, ...validation.value }
+          : shift
+      );
+      const conflictValidation = validateNoProposedShiftConflict(
+        nextShifts,
+        action.payload.id
+      );
+
+      if (!conflictValidation.isValid) {
+        return withErrors(state, conflictValidation.errors);
+      }
+
       return createRosterState({
         employees: state.employees,
-        shifts: state.shifts.map((shift) =>
-          shift.id === action.payload.id
-            ? { ...shift, ...validation.value }
-            : shift
-        )
+        shifts: nextShifts
       });
     }
 
@@ -266,6 +284,33 @@ export function validateShiftInput(input, state) {
     value: { employeeId, role, day, startTime, endTime },
     errors: {}
   };
+}
+
+function validateNoProposedShiftConflict(shifts, shiftId) {
+  const conflict = detectRosterConflicts(shifts).find((item) =>
+    item.shiftIds.includes(shiftId)
+  );
+
+  if (!conflict) {
+    return { isValid: true, errors: {} };
+  }
+
+  return {
+    isValid: false,
+    errors: { conflict: shiftConflictMessage(conflict.type) }
+  };
+}
+
+function shiftConflictMessage(type) {
+  if (type === "overlap") {
+    return "Employee already has an overlapping shift.";
+  }
+
+  if (type === "consecutive-days") {
+    return "Employee cannot be scheduled for more than 5 consecutive days.";
+  }
+
+  return "Shift conflicts with the existing roster.";
 }
 
 function withErrors(state, errors) {

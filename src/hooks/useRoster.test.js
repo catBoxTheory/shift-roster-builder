@@ -238,6 +238,98 @@ describe("rosterReducer", () => {
     );
   });
 
+  test("rejects adding a shift that overlaps an existing shift", () => {
+    const state = baseState();
+    const blockedState = rosterReducer(state, {
+      type: "shift/add",
+      payload: {
+        id: "shift-2",
+        employeeId: "emp-1",
+        role: "Cashier",
+        day: 0,
+        startTime: "12:00",
+        endTime: "18:00"
+      }
+    });
+
+    expect(blockedState.shifts).toEqual(state.shifts);
+    expect(blockedState.conflicts).toEqual([]);
+    expect(blockedState.lastErrors).toEqual({
+      conflict: "Employee already has an overlapping shift."
+    });
+  });
+
+  test("rejects editing a shift into an overlap", () => {
+    const state = createRosterState({
+      employees: baseState().employees,
+      shifts: [
+        ...baseState().shifts,
+        {
+          id: "shift-2",
+          employeeId: "emp-1",
+          role: "Supervisor",
+          day: 1,
+          startTime: "12:00",
+          endTime: "18:00"
+        }
+      ]
+    });
+
+    const blockedState = rosterReducer(state, {
+      type: "shift/edit",
+      payload: {
+        id: "shift-2",
+        employeeId: "emp-1",
+        role: "Supervisor",
+        day: 0,
+        startTime: "12:00",
+        endTime: "18:00"
+      }
+    });
+
+    expect(blockedState.shifts).toEqual(state.shifts);
+    expect(blockedState.lastErrors).toEqual({
+      conflict: "Employee already has an overlapping shift."
+    });
+  });
+
+  test("rejects adding a shift that would exceed 5 consecutive days", () => {
+    const state = createRosterState({
+      employees: [
+        {
+          id: "emp-1",
+          name: "Alex",
+          roles: ["Cashier"]
+        }
+      ],
+      shifts: [0, 1, 2, 3, 4].map((day) => ({
+        id: `shift-${day}`,
+        employeeId: "emp-1",
+        role: "Cashier",
+        day,
+        startTime: "09:00",
+        endTime: "17:00"
+      }))
+    });
+
+    const blockedState = rosterReducer(state, {
+      type: "shift/add",
+      payload: {
+        id: "shift-5",
+        employeeId: "emp-1",
+        role: "Cashier",
+        day: 5,
+        startTime: "09:00",
+        endTime: "17:00"
+      }
+    });
+
+    expect(blockedState.shifts).toEqual(state.shifts);
+    expect(blockedState.lastErrors).toEqual({
+      conflict: "Employee cannot be scheduled for more than 5 consecutive days."
+    });
+  });
+
   test("recalculates derived conflicts and weekly totals", () => {
     const state = createRosterState({
       employees: [
