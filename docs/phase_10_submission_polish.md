@@ -21,10 +21,12 @@ In scope:
 - Final README updates with feature summary, data model, architecture, AI tools, verification, screenshot, demo video link, and known limitations.
 - Screenshot and short demo recording of the app running.
 - Submission to Spencer's recruiter email.
+- Scope a cross-panel validation-error leak so employee-form errors no longer appear in the shift editor.
+- Behavior-preserving code-quality cleanup that removes duplicated helpers without changing the UI.
 
 Out of scope:
 
-- New roster features or behavior changes.
+- New roster features.
 - Drag-and-drop or availability logic changes.
 - Backend or persistence.
 - Authentication, deployment, or database work.
@@ -40,6 +42,10 @@ The layout follows the manager's workflow. Employee setup stays on the left beca
 The CSV export was also simplified during this phase. Earlier versions could export conflict notes, but the current UI prevents normal users from adding overlapping or invalid shifts. Keeping a conflict notes column would usually produce empty data and make the export look more complicated than the current product behavior.
 
 After the UI polish, the final documentation was updated to support review directly from GitHub. The README now includes a clickable YouTube thumbnail preview, a separate dashboard screenshot, and concise sections for setup, features, data model, validation rules, UI/UX decisions, AI tool usage, verification, and limitations.
+
+A final self-review pass then caught one defect and a set of code-quality issues. The defect: opening the shift editor while an employee add/edit had failed would surface the employee-form errors (for example "Employee name is required." or "Select at least one role.") inside the shift edit card. The shift editor was being handed the shared global `lastErrors` from roster state, even though the grid already validates shifts locally before dispatching. The fix scopes the shift editor to its own local validation errors only, so each panel reports its own problems. Conflict prevention is unchanged, so the roster and CSV export stay correct.
+
+The same pass removed duplicated logic that had accumulated across phases: the weekday label array and `dayLabel`, the `ErrorList` component, the `shiftConflictMessage` mapping, and the hour-rounding helper each existed in two or more files. These were consolidated into single shared modules so there is one source of truth per concern, with byte-identical output to the previous inline copies.
 
 ## Design Decisions
 
@@ -87,6 +93,14 @@ After the UI polish, the final documentation was updated to support review direc
   Reason: GitHub Markdown does not render playable YouTube iframes in repository READMEs, while a linked thumbnail is stable, recognizable, and reviewer-friendly.
   Tradeoff: The video does not play inline inside GitHub, but the demo is one click away and the app screenshot still shows the final UI.
 
+- Decision: Scope the shift editor to its own local validation errors instead of the shared global `lastErrors`.
+  Reason: Employee-form errors were leaking into the shift edit card; the grid already validates shifts before dispatching, so the global merge was both unnecessary and the source of the leak.
+  Tradeoff: The shift editor no longer mirrors reducer-side errors, but those paths are blocked locally before dispatch, so no message is lost.
+
+- Decision: Consolidate duplicated helpers into shared modules (`utils/days.js`, `components/ErrorList.jsx`, `shiftConflictMessage` in `utils/conflicts.js`, `roundHours` in `utils/time.js`).
+  Reason: One source of truth per concern is easier to read, test, and review, which supports the Code Quality and Structure criterion.
+  Tradeoff: A few more small modules and imports, but each removes copy-paste drift risk with identical output.
+
 ## AI Tools And Assistants Used
 
 - Tool: Claude Code /mimo-v2.5-pro
@@ -100,6 +114,10 @@ After the UI polish, the final documentation was updated to support review direc
 - Tool: Codex with HyperFrames project workflow, local Whisper, and FFmpeg
   Used for: Demo video subtitle preparation, caption styling, final MP4 rendering, screenshot extraction, and README demo asset preparation.
   Human review: User reviewed the subtitle styling and requested removal of the red caption bar before finalizing.
+
+- Tool: Cursor agent (Claude Opus)
+  Used for: Final self-review that identified the error-scope leak, the behavior-preserving deduplication refactor, and this phase log update.
+  Human review: User reported the shift-editor error bug and requested code-quality cleanup that does not change the website; changes were verified against the full test suite and a production build before acceptance.
 
 ## Verification
 
@@ -134,6 +152,7 @@ Manual checks:
 - Shift editor appears above the sticky weekday header.
 - Shift cards are centered inside weekday cells and full shift times remain visible.
 - Overlap validation still appears in the shift editor.
+- Employee-form errors (name required, role required) now appear only in the employee panel, not in the shift editor.
 - Export CSV remains present and enabled.
 - README includes the GitHub-friendly YouTube thumbnail preview and direct demo link: [YouTube walkthrough](https://youtu.be/a7XEsMy2kfI).
 - README includes the final dashboard screenshot at `screenshots/shift-roster-builder-dashboard.png`.

@@ -46,7 +46,6 @@ export default function App() {
           shifts={roster.shifts}
           conflicts={roster.conflicts}
           conflictingShiftIds={roster.conflictingShiftIds}
-          lastErrors={roster.lastErrors}
           onAddShift={roster.addShift}
           onEditShift={roster.editShift}
           onRemoveShift={roster.removeShift}

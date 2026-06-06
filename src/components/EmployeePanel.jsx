@@ -1,4 +1,6 @@
 import { useState } from "react";
+import ErrorList from "./ErrorList.jsx";
+import { DAY_LABELS } from "../utils/days.js";
 
 export const ROLE_OPTIONS = [
   "Cashier",
@@ -8,7 +10,7 @@ export const ROLE_OPTIONS = [
   "Cleaner"
 ];
 
-export const DAY_OPTIONS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+export const DAY_OPTIONS = DAY_LABELS;
 
 export default function EmployeePanel({
   employees,
@@ -252,22 +254,6 @@ export default function EmployeePanel({
         })}
       </div>
     </section>
-  );
-}
-
-function ErrorList({ errors }) {
-  const messages = Object.values(errors);
-
-  if (messages.length === 0) {
-    return null;
-  }
-
-  return (
-    <div className="error-list" role="alert">
-      {messages.map((message) => (
-        <p key={message}>{message}</p>
-      ))}
-    </div>
   );
 }
 

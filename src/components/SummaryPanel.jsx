@@ -1,3 +1,5 @@
+import { roundHours } from "../utils/time.js";
+
 export default function SummaryPanel({
   employees,
   shifts,
@@ -96,5 +98,5 @@ function countShiftsByEmployee(shifts) {
 }
 
 function formatHours(hours) {
-  return `${Number(hours.toFixed(2))}h`;
+  return `${roundHours(hours)}h`;
 }

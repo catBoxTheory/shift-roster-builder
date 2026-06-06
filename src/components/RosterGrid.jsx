@@ -1,10 +1,10 @@
 import { useMemo, useState } from "react";
 import { validateShiftInput } from "../hooks/useRoster.js";
-import { detectRosterConflicts } from "../utils/conflicts.js";
+import { detectRosterConflicts, shiftConflictMessage } from "../utils/conflicts.js";
 import ConflictBadge from "./ConflictBadge.jsx";
 import ShiftEditor from "./ShiftEditor.jsx";
+import { DAY_LABELS } from "../utils/days.js";
 
-const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const EMPTY_CONFLICTS = [];
 const EMPTY_CONFLICTING_SHIFT_IDS = new Set();
 
@@ -13,7 +13,6 @@ export default function RosterGrid({
   shifts,
   conflicts = EMPTY_CONFLICTS,
   conflictingShiftIds = EMPTY_CONFLICTING_SHIFT_IDS,
-  lastErrors = {},
   onAddShift,
   onEditShift,
   onRemoveShift,
@@ -144,7 +143,7 @@ export default function RosterGrid({
           <div className="employee-column-heading" role="columnheader">
             Employee
           </div>
-          {DAYS.map((day) => (
+          {DAY_LABELS.map((day) => (
             <div className="day-heading" role="columnheader" key={day}>
               {day}
             </div>
@@ -157,7 +156,7 @@ export default function RosterGrid({
               <strong>{employee.name}</strong>
               <span>{employee.roles.join(", ")}</span>
             </div>
-            {DAYS.map((day, dayIndex) => {
+            {DAY_LABELS.map((day, dayIndex) => {
               const cellShifts =
                 shiftsByEmployeeDay.get(cellKey(employee.id, dayIndex)) ?? [];
               const isDropTarget =
@@ -242,7 +241,7 @@ export default function RosterGrid({
             employee={editorEmployee}
             day={editorContext.day}
             shift={editorContext.shift}
-            lastErrors={{ ...lastErrors, ...editorErrors }}
+            lastErrors={editorErrors}
             onSubmit={submitShift}
             onRemove={removeShift}
             onCancel={closeEditor}
@@ -283,16 +282,4 @@ function countConflictsByShift(conflicts) {
   }
 
   return counts;
-}
-
-function shiftConflictMessage(type) {
-  if (type === "overlap") {
-    return "Employee already has an overlapping shift.";
-  }
-
-  if (type === "consecutive-days") {
-    return "Employee cannot be scheduled for more than 5 consecutive days.";
-  }
-
-  return "Shift conflicts with the existing roster.";
 }

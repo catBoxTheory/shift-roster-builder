@@ -21,3 +21,7 @@ export function calculateShiftHours({ startTime, endTime }) {
 
   return (endMinutes - startMinutes) / 60;
 }
+
+export function roundHours(hours) {
+  return String(Number(hours.toFixed(2)));
+}

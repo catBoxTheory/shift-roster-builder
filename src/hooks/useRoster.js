@@ -1,7 +1,8 @@
 import { useMemo, useReducer } from "react";
 import {
   detectRosterConflicts,
-  getConflictingShiftIds
+  getConflictingShiftIds,
+  shiftConflictMessage
 } from "../utils/conflicts.js";
 import { calculateWeeklyHoursByEmployee } from "../utils/summary.js";
 import { calculateShiftHours } from "../utils/time.js";
@@ -399,18 +400,6 @@ function validateNoProposedShiftConflict(shifts, shiftId) {
     isValid: false,
     errors: { conflict: shiftConflictMessage(conflict.type) }
   };
-}
-
-function shiftConflictMessage(type) {
-  if (type === "overlap") {
-    return "Employee already has an overlapping shift.";
-  }
-
-  if (type === "consecutive-days") {
-    return "Employee cannot be scheduled for more than 5 consecutive days.";
-  }
-
-  return "Shift conflicts with the existing roster.";
 }
 
 function withErrors(state, errors) {

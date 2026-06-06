@@ -1,6 +1,6 @@
-import { calculateShiftHours } from "./time.js";
+import { calculateShiftHours, roundHours } from "./time.js";
+import { dayLabel } from "./days.js";
 
-const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const HEADERS = ["Employee", "Role", "Day", "Start", "End", "Hours"];
 
 export function buildRosterCsv({ employees, shifts }) {
@@ -18,7 +18,7 @@ export function buildRosterCsv({ employees, shifts }) {
         dayLabel(shift.day),
         shift.startTime,
         shift.endTime,
-        formatHours(calculateShiftHours(shift))
+        roundHours(calculateShiftHours(shift))
       ];
     });
 
@@ -61,12 +61,4 @@ function formatCsvCell(value) {
   }
 
   return `"${text.replaceAll('"', '""')}"`;
-}
-
-function dayLabel(day) {
-  return DAYS[day] ?? "Day";
-}
-
-function formatHours(hours) {
-  return String(Number(hours.toFixed(2)));
 }

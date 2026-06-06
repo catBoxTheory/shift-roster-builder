@@ -77,6 +77,18 @@ export function getConflictingShiftIds(conflicts) {
   return new Set(conflicts.flatMap((conflict) => conflict.shiftIds));
 }
 
+export function shiftConflictMessage(type) {
+  if (type === "overlap") {
+    return "Employee already has an overlapping shift.";
+  }
+
+  if (type === "consecutive-days") {
+    return "Employee cannot be scheduled for more than 5 consecutive days.";
+  }
+
+  return "Shift conflicts with the existing roster.";
+}
+
 function timeRangesOverlap(first, second) {
   const firstStart = parseTimeToMinutes(first.startTime);
   const firstEnd = parseTimeToMinutes(first.endTime);
