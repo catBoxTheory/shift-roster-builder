@@ -39,7 +39,7 @@ The layout follows the manager's workflow. Employee setup stays on the left beca
 
 The CSV export was also simplified during this phase. Earlier versions could export conflict notes, but the current UI prevents normal users from adding overlapping or invalid shifts. Keeping a conflict notes column would usually produce empty data and make the export look more complicated than the current product behavior.
 
-After the UI polish, the final documentation was updated to support review directly from GitHub. The README now includes a clickable dashboard screenshot that links to the YouTube demo video, plus concise sections for setup, features, data model, validation rules, UI/UX decisions, AI tool usage, verification, and limitations.
+After the UI polish, the final documentation was updated to support review directly from GitHub. The README now includes a clickable YouTube thumbnail preview, a separate dashboard screenshot, and concise sections for setup, features, data model, validation rules, UI/UX decisions, AI tool usage, verification, and limitations.
 
 ## Design Decisions
 
@@ -83,9 +83,9 @@ After the UI polish, the final documentation was updated to support review direc
   Reason: The logo has meaningful alt text, the H1 remains the page title, and existing form labels/button names continue to describe roster actions.
   Tradeoff: Some purely decorative styling stays CSS-based, but semantic UI content remains available to assistive technology.
 
-- Decision: Embed the demo video in the README as a clickable screenshot linked to YouTube.
-  Reason: GitHub Markdown does not reliably render playable YouTube iframes, while a linked screenshot is stable, visible, and reviewer-friendly.
-  Tradeoff: The video does not play inline inside GitHub, but the demo is one click away and the screenshot still shows the final UI.
+- Decision: Present the demo video in the README as a clickable YouTube thumbnail preview.
+  Reason: GitHub Markdown does not render playable YouTube iframes in repository READMEs, while a linked thumbnail is stable, recognizable, and reviewer-friendly.
+  Tradeoff: The video does not play inline inside GitHub, but the demo is one click away and the app screenshot still shows the final UI.
 
 ## AI Tools And Assistants Used
 
@@ -135,7 +135,7 @@ Manual checks:
 - Shift cards are centered inside weekday cells and full shift times remain visible.
 - Overlap validation still appears in the shift editor.
 - Export CSV remains present and enabled.
-- README includes the GitHub-friendly demo link: [YouTube walkthrough](https://youtu.be/a7XEsMy2kfI).
+- README includes the GitHub-friendly YouTube thumbnail preview and direct demo link: [YouTube walkthrough](https://youtu.be/a7XEsMy2kfI).
 - README includes the final dashboard screenshot at `screenshots/shift-roster-builder-dashboard.png`.
 
 ## Known Limitations And Follow-Up
@@ -151,4 +151,4 @@ This phase prepares the assessment for review by combining final documentation w
 
 The final layout is intentionally operational rather than promotional: Employees on the left, Roster Grid top right, Review bottom right, and Export CSV as the final centered action inside the Review card. This supports the expected scheduling workflow without adding new product scope.
 
-The root README now acts as the main reviewer handoff: it shows the app screenshot, links the YouTube demo, explains how to run the app, and summarizes design decisions, validation rules, AI usage, and remaining limitations.
+The root README now acts as the main reviewer handoff: it shows a YouTube demo preview, shows the app screenshot, explains how to run the app, and summarizes design decisions, validation rules, AI usage, and remaining limitations.

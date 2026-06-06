@@ -2,9 +2,15 @@
 
 A weekly staff scheduling web app for the Optix Solutions Stage 2 take-home assignment.
 
-[![Shift Roster Builder dashboard screenshot](./screenshots/shift-roster-builder-dashboard.png)](https://youtu.be/a7XEsMy2kfI)
+## Demo Video
 
-**Demo video:** [YouTube walkthrough](https://youtu.be/a7XEsMy2kfI)
+[![Watch the Shift Roster Builder YouTube demo](https://img.youtube.com/vi/a7XEsMy2kfI/hqdefault.jpg)](https://youtu.be/a7XEsMy2kfI)
+
+Click the preview image above to watch the [YouTube walkthrough](https://youtu.be/a7XEsMy2kfI).
+
+## App Screenshot
+
+![Shift Roster Builder dashboard screenshot](./screenshots/shift-roster-builder-dashboard.png)
 
 ## Quick Start
 
