@@ -53,7 +53,7 @@ The UI uses the same checkbox pattern as role selection, reusing the `toggleValu
 
 ## AI Tools And Assistants Used
 
-- Claude Code with mimo-v2.5-pro: implemented the availability validation, UI toggles, grid indicators, tests, styles, and documentation.
+- Claude Code /mimo-v2.5-pro: implemented the availability validation, UI toggles, grid indicators, tests, styles, and documentation.
 - `test-driven-development`: guided the red-green flow for reducer availability validation.
 - `karpathy-guidelines`: kept the feature scoped to day-level unavailability only.
 - `frontend-design`: guided the hatched cell treatment and availability tag styling.

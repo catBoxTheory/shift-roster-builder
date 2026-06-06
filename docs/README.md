@@ -19,7 +19,9 @@ The assessment email specifically encourages documenting:
 | Phase 5: Weekly Roster Grid and Shift Editor | Complete | [phase_5_roster_grid.md](./phase_5_roster_grid.md) |
 | Phase 6: Conflict UI and Summary Panel | Complete | [phase_6_conflicts_summary.md](./phase_6_conflicts_summary.md) |
 | Phase 7: Stretch Goals | Complete | [phase_7_stretch_goals.md](./phase_7_stretch_goals.md) |
-| Phase 8: README and Submission Polish | Not started | Use [phase_template.md](./phase_template.md) |
+| Phase 8: Drag-and-Drop Shift Reassignment | Complete | [phase_8_drag_drop.md](./phase_8_drag_drop.md) |
+| Phase 9: Employee Availability Preferences | Complete | [phase_9_availability.md](./phase_9_availability.md) |
+| Phase 10: README and Submission Polish | In progress | [phase_10_submission_polish.md](./phase_10_submission_polish.md) |
 
 ## Documentation Rule For Each Phase
 
