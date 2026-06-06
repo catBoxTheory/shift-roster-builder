@@ -33,10 +33,10 @@ The most important strategy is to ship a clean, working core with clear reasonin
 - Stage-by-stage documentation is maintained under `docs/`.
 - Phase 8 drag-and-drop shift reassignment is complete.
 - Phase 9 employee availability preferences is complete.
-- Phase 10 submission polish is in progress: CSV export has been simplified to the six reviewer-useful columns; README, screenshot/demo, and email reply still remain.
-- Next phase: complete Phase 10 README and submission polish.
+- Phase 10 submission polish is complete: CSV export has been simplified to the six reviewer-useful columns, the README has been finalized, and screenshot/demo assets are linked for review.
+- Next step: send the final submission email with the public GitHub repository link and YouTube demo link.
 
-Phase 8 and Phase 9 are complete locally and documented. Phase 10 has started locally with CSV simplification; the remaining work is final README polish, screenshot/demo asset, and email reply.
+Phase 8, Phase 9, and Phase 10 are complete and documented. The remaining work is the applicant's final email reply.
 
 ---
 
@@ -373,17 +373,17 @@ Completed steps:
 8. Browser verification: set an employee as unavailable on Monday, attempt to assign a Monday shift, confirm it is blocked.
 9. Create `docs/phase_9_availability.md` using `docs/phase_template.md`.
 
-### Phase 10: README and Submission Polish - In Progress
+### Phase 10: README and Submission Polish - Complete
 
 Goal: make the work easy to review and strong for the Problem Decomposition score.
 
-Latest update: Phase 10 has started by simplifying CSV export. The conflict-notes column was removed because normal UI workflows now block invalid conflicts before export, so the CSV should focus on the core roster fields: employee, role, day, start, end, and hours.
+Latest update: Phase 10 is complete. The conflict-notes column was removed because normal UI workflows now block invalid conflicts before export, so the CSV focuses on the core roster fields: employee, role, day, start, end, and hours. The final README now includes setup instructions, a dashboard screenshot, a YouTube demo link, feature summary, data model, architecture notes, UI/UX decisions, AI tool usage, verification, limitations, and links to the phase logs.
 
-README should include:
+README includes:
 
 - Two-command setup instructions.
 - Feature summary (including drag-and-drop and availability preferences).
-- Screenshot or short recording of the app running.
+- Screenshot and YouTube demo recording of the app running.
 - Data model explanation.
 - Architecture and state-management decisions.
 - Conflict-detection explanation.
@@ -394,11 +394,11 @@ README should include:
 
 Submission steps:
 
-1. Run final checks: `npm run build`, `npm test`, and browser QA.
-2. Take screenshot or record a 60-90 second demo.
-3. Push to a public GitHub repository.
-4. Reply to Spencer's email with the repository link and demo/screenshot note.
-5. Create `docs/phase_10_submission_polish.md` summarizing final checks, submission assets, and remaining limitations.
+1. Run final checks: `npm run build`, `npm test`, and browser QA. Complete.
+2. Take screenshot or record a 60-90 second demo. Complete.
+3. Push to a public GitHub repository. Complete.
+4. Reply to Spencer's email with the repository link and demo/screenshot note. Applicant action.
+5. Create `docs/phase_10_submission_polish.md` summarizing final checks, submission assets, and remaining limitations. Complete.
 
 ---
 
@@ -426,7 +426,7 @@ Submission steps:
 | Phase 7: Stretch goals | Complete | 7:30 |
 | Phase 8: Drag-and-drop | Complete | 9:00 |
 | Phase 9: Availability preferences | Complete | 10:30 |
-| Phase 10: README/submission polish | In progress | 11:30 |
+| Phase 10: README/submission polish | Complete | 11:30 |
 
 Total target: about 11.5 hours.
 

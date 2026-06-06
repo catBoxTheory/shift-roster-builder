@@ -21,7 +21,7 @@ The assessment email specifically encourages documenting:
 | Phase 7: Stretch Goals | Complete | [phase_7_stretch_goals.md](./phase_7_stretch_goals.md) |
 | Phase 8: Drag-and-Drop Shift Reassignment | Complete | [phase_8_drag_drop.md](./phase_8_drag_drop.md) |
 | Phase 9: Employee Availability Preferences | Complete | [phase_9_availability.md](./phase_9_availability.md) |
-| Phase 10: README and Submission Polish | In progress | [phase_10_submission_polish.md](./phase_10_submission_polish.md) |
+| Phase 10: README and Submission Polish | Complete | [phase_10_submission_polish.md](./phase_10_submission_polish.md) |
 
 ## Documentation Rule For Each Phase
 

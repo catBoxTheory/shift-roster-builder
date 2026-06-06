@@ -2,14 +2,14 @@
 
 ## Status
 
-- Status: In progress
+- Status: Complete
 - Date: 2026-06-06
-- Commit: `3f9fdad` (`polish Optix roster UI/UX design`)
+- Commit: `3f9fdad` (`polish Optix roster UI/UX design`) plus final README/demo documentation push
 - GitHub: [catBoxTheory/shift-roster-builder](https://github.com/catBoxTheory/shift-roster-builder)
 
 ## Goal
 
-Make the work easy to review and strong for the Problem Decomposition score. Simplify the CSV export, document the UI/UX redesign decisions, and prepare the final README, screenshots, and submission.
+Make the work easy to review and strong for the Problem Decomposition score. Simplify the CSV export, document the UI/UX redesign decisions, and prepare the final README, screenshot, demo video link, and submission assets.
 
 ## Scope
 
@@ -18,8 +18,8 @@ In scope:
 - Simplify CSV export by removing the conflict notes column.
 - Redesign the app shell with Optix Solution Limited branding.
 - Document the UI/UX design direction, dashboard layout, and interaction polish.
-- Final README updates with feature summary, data model, architecture, AI tools, and known limitations.
-- Screenshot or short demo recording of the app running.
+- Final README updates with feature summary, data model, architecture, AI tools, verification, screenshot, demo video link, and known limitations.
+- Screenshot and short demo recording of the app running.
 - Submission to Spencer's recruiter email.
 
 Out of scope:
@@ -38,6 +38,8 @@ The chosen direction was a Light Ops Dashboard. A darker, more promotional visua
 The layout follows the manager's workflow. Employee setup stays on the left because that is the main data-entry area. The roster grid sits at the top right because it is the primary scheduling canvas and needs the widest horizontal space for seven weekday columns. The review panel sits at the bottom right so totals, weekly hours, and export are close to the roster without interrupting shift assignment.
 
 The CSV export was also simplified during this phase. Earlier versions could export conflict notes, but the current UI prevents normal users from adding overlapping or invalid shifts. Keeping a conflict notes column would usually produce empty data and make the export look more complicated than the current product behavior.
+
+After the UI polish, the final documentation was updated to support review directly from GitHub. The README now includes a clickable dashboard screenshot that links to the YouTube demo video, plus concise sections for setup, features, data model, validation rules, UI/UX decisions, AI tool usage, verification, and limitations.
 
 ## Design Decisions
 
@@ -81,6 +83,10 @@ The CSV export was also simplified during this phase. Earlier versions could exp
   Reason: The logo has meaningful alt text, the H1 remains the page title, and existing form labels/button names continue to describe roster actions.
   Tradeoff: Some purely decorative styling stays CSS-based, but semantic UI content remains available to assistive technology.
 
+- Decision: Embed the demo video in the README as a clickable screenshot linked to YouTube.
+  Reason: GitHub Markdown does not reliably render playable YouTube iframes, while a linked screenshot is stable, visible, and reviewer-friendly.
+  Tradeoff: The video does not play inline inside GitHub, but the demo is one click away and the screenshot still shows the final UI.
+
 ## AI Tools And Assistants Used
 
 - Tool: Claude Code /mimo-v2.5-pro
@@ -90,6 +96,10 @@ The CSV export was also simplified during this phase. Earlier versions could exp
 - Tool: Codex with Product Design workflow
   Used for: Optix-branded Light Ops redesign, layout refinements, UI/UX documentation, tests, and browser QA.
   Human review: User reviewed screenshots and requested layout, color, export placement, editor overlay, and shift-card visibility refinements.
+
+- Tool: Codex with HyperFrames project workflow, local Whisper, and FFmpeg
+  Used for: Demo video subtitle preparation, caption styling, final MP4 rendering, screenshot extraction, and README demo asset preparation.
+  Human review: User reviewed the subtitle styling and requested removal of the red caption bar before finalizing.
 
 ## Verification
 
@@ -110,6 +120,8 @@ Command results:
 - Focused SummaryPanel layout test passed.
 - Full test suite passed: 9 files, 68 tests.
 - Production build passed.
+- README screenshot was captured from the running Vite app with Playwright at a wide desktop viewport.
+- Final subtitled demo MP4 was verified with `ffprobe` before the YouTube upload was linked.
 
 Manual checks:
 
@@ -123,11 +135,12 @@ Manual checks:
 - Shift cards are centered inside weekday cells and full shift times remain visible.
 - Overlap validation still appears in the shift editor.
 - Export CSV remains present and enabled.
+- README includes the GitHub-friendly demo link: [YouTube walkthrough](https://youtu.be/a7XEsMy2kfI).
+- README includes the final dashboard screenshot at `screenshots/shift-roster-builder-dashboard.png`.
 
 ## Known Limitations And Follow-Up
 
-- Screenshot or demo recording still needed before submission.
-- Final README polish still in progress.
+- Final email submission still needs to be sent by the applicant.
 - The app is still client-only; data does not persist after refresh.
 - Availability remains day-level only; per-time-slot availability is not supported.
 - Touch-device drag-and-drop support is not included.
@@ -137,3 +150,5 @@ Manual checks:
 This phase prepares the assessment for review by combining final documentation work with UI/UX polish. The app keeps the same roster logic, validation behavior, drag-and-drop reassignment, availability checks, weekly hours summary, and CSV export while making the product feel more aligned with Optix Solution Limited.
 
 The final layout is intentionally operational rather than promotional: Employees on the left, Roster Grid top right, Review bottom right, and Export CSV as the final centered action inside the Review card. This supports the expected scheduling workflow without adding new product scope.
+
+The root README now acts as the main reviewer handoff: it shows the app screenshot, links the YouTube demo, explains how to run the app, and summarizes design decisions, validation rules, AI usage, and remaining limitations.
